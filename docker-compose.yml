@@ -66,7 +66,6 @@ services:
       RABBITMQ_DEFAULT_USER: rabbitmq
       RABBITMQ_DEFAULT_PASS: rabbitmq
       RABBITMQ_DEFAULT_VHOST: ${PROJECT_NAME}
-      #RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: -rabbitmq_management load_definitions "/tmp/definitions.json"
     volumes:
       - rabbitmq_volume:/var/lib/rabbitmq/mnesia/rabbit@my-rabbit
     labels:
@@ -103,7 +102,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./.deployment/docker/containers/traefik/traefik.yml:/etc/traefik/traefik.yml:ro
       - ./.deployment/docker/containers/traefik/config.yml:/etc/traefik/config.yml:ro
-      - ./certs:/etc/certs:ro
+      - certs:/etc/ssl/traefik:ro
     networks:
       - traefik
     labels:
