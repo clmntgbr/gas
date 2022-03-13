@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Common\EntityId\GasStationId;
 use App\Common\EntityId\GasTypeId;
 use App\Message\CreateGasPriceMessage;
+use Symfony\Component\Messenger\Bridge\Amqp\Transport\AmqpStamp;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 final class GasPriceService
@@ -52,6 +53,6 @@ final class GasPriceService
             $gasTypeId,
             $date,
             $value
-        ));
+        ), [new AmqpStamp('async-priority-low', AMQP_NOPARAM, [])]);
     }
 }

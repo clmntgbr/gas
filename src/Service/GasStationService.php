@@ -9,6 +9,7 @@ use App\Helper\GasStationStatusHelper;
 use App\Lists\GasStationStatusReference;
 use App\Message\CreateGasStationMessage;
 use GuzzleHttp\Client;
+use Symfony\Component\Messenger\Bridge\Amqp\Transport\AmqpStamp;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 final class GasStationService
@@ -54,7 +55,7 @@ final class GasStationService
             (string)$element->ville,
             "FRANCE",
             json_decode(str_replace("@", "", json_encode($element)), true)
-        ));
+        ), [new AmqpStamp('async-priority-high', AMQP_NOPARAM, [])]);
     }
 
     public function getGasStationInformationFromGovernment(GasStation $gasStation)

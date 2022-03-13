@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Common\EntityId\GasStationId;
 use App\Message\CreateGasServiceMessage;
+use Symfony\Component\Messenger\Bridge\Amqp\Transport\AmqpStamp;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 final class GasServiceService
@@ -19,6 +20,6 @@ final class GasServiceService
         $this->messageBus->dispatch(new CreateGasServiceMessage(
             $gasStationId,
             $item
-        ));
+        ), [new AmqpStamp('async-priority-low', AMQP_NOPARAM, [])]);
     }
 }

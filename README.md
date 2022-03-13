@@ -26,4 +26,8 @@ A Symfony 6 docker template base project using PHP8, Nginx, MariaDb, RabbitMQ, M
 * Traefik latest
 * Symfony 6.0.5 with some bundles : `symfony/maker-bundle`, `symfony/web-profiler-bundle`, `symfony/messenger`, etc
 
+## Helpful commands
+
+`bin/console messenger:consume async_priority_low -vv --queues=messages_low`
+`bin/console messenger:consume async_priority_high -vv --queues=messages_high`
 **Enjoy!**
