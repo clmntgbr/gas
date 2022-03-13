@@ -21,6 +21,9 @@ RUN     mkdir -p var/cache var/log; \
     	chmod +x bin/console; sync
 
 RUN docker-php-ext-install pdo_mysql
+RUN apk add --no-cache zip libzip-dev
+RUN docker-php-ext-configure zip
+RUN docker-php-ext-install zip
 
 ENV EXT_AMQP_VERSION=master
 

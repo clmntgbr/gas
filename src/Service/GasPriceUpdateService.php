@@ -1,0 +1,104 @@
+<?php
+
+namespace App\Service;
+
+use App\Common\EntityId\GasStationId;
+use App\Common\EntityId\GasTypeId;
+use App\Common\Exception\GasPriceUpdateServiceException;
+use App\Entity\GasService;
+use App\Entity\GasStation;
+use App\Entity\GasType;
+use Doctrine\ORM\EntityManagerInterface;
+
+final class GasPriceUpdateService
+{
+    const PATH = 'public/gas_price_instant/';
+    const FILENAME = 'gas-price-instant.zip';
+
+    public function __construct(
+        private EntityManagerInterface $em,
+        private GasPriceService        $gasPriceService,
+        private GasStationService      $gasStationService,
+        private GasServiceService      $gasServiceService
+    )
+    {
+    }
+
+    public function update()
+    {
+        $gasStations = $this->em->getRepository(GasStation::class)->findGasStationById();
+        $gasServices = $this->em->getRepository(GasService::class)->findGasServiceByGasStationId();
+        $gasTypes = $this->em->getRepository(GasType::class)->findGasTypeById();
+
+        $xmlPath = $this->gasPriceService->downloadGasPriceFile(
+            self::PATH,
+            self::FILENAME,
+            GasPriceService::GAS_PRICE_FILE_TYPE
+        );
+
+        $elements = simplexml_load_file($xmlPath);
+
+        if (false === $elements) {
+            throw new GasPriceUpdateServiceException(GasPriceUpdateServiceException::GAS_PRICE_INSTANT_EMPTY);
+        }
+
+        foreach ($elements as $element) {
+            $gasStationId = $this->gasStationService->getGasStationId($element);
+
+            if (strpos($gasStationId->getId(), '94') !== 0) {
+                continue;
+            }
+
+            if (!array_key_exists($gasStationId->getId(), $gasStations)) {
+                $this->gasStationService->createGasStation($gasStationId, $element);
+                $gasStations[$gasStationId->getId()] = [
+                    "id" => $gasStationId->getId()
+                ];
+            }
+
+            $this->getGasService($gasStationId, $element, $gasServices);
+            $this->getGasPrices($gasStationId, $element, $gasTypes);
+        }
+
+        FileSystemService::delete($xmlPath);
+    }
+
+    private function getGasService(GasStationId $gasStationId, \SimpleXMLElement $element, array $gasServices): void
+    {
+        foreach ((array)$element->services->service as $item) {
+            if (array_key_exists($gasStationId->getId(), $gasServices)) {
+                if (array_key_exists($item, $gasServices[$gasStationId->getId()])) {
+                    continue;
+                }
+            }
+
+            $this->gasServiceService->createGasService(
+                $gasStationId,
+                $item
+            );
+        }
+    }
+
+    private function getGasPrices(GasStationId $gasStationId, \SimpleXMLElement $element, array $gasTypes): void
+    {
+        foreach ($element->prix as $item) {
+            $gasTypeId = (string)$item->attributes()->id;
+
+            if (null === $gasTypeId || "" === $gasTypeId) {
+                continue;
+            }
+
+            $gasTypeId = new GasTypeId($gasTypes[$gasTypeId]['id']);
+
+            $date = (string)$item->attributes()->maj;
+
+            $date = str_replace("T", " ", substr($date, 0, 19));
+
+            if (null === $date || "" === $date) {
+                continue;
+            }
+
+            $this->gasPriceService->createGasPrice($gasStationId, $gasTypeId, $date, (string)$item->attributes()->valeur);
+        }
+    }
+}

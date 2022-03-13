@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\GasPrice;
+use App\Entity\GasStation;
+use App\Entity\GasType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -45,32 +47,20 @@ class GasPriceRepository extends ServiceEntityRepository
         }
     }
 
-    // /**
-    //  * @return GasPrice[] Returns an array of GasPrice objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findLastGasPriceByTypeAndGasStationExceptId(GasStation $gasStation, GasType $gasType, int $gasPriceId)
     {
         return $this->createQueryBuilder('g')
-            ->andWhere('g.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('g.id', 'ASC')
-            ->setMaxResults(10)
+            ->where('g.gasStation = :gs')
+            ->andWhere('g.gasType = :gt')
+            ->andWhere('g.id != :g')
+            ->setParameters([
+                'gs' => $gasStation,
+                'gt' => $gasType,
+                'g' => $gasPriceId
+            ])
+            ->orderBy('g.id', 'DESC')
+            ->setMaxResults(1)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getOneOrNullResult();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?GasPrice
-    {
-        return $this->createQueryBuilder('g')
-            ->andWhere('g.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

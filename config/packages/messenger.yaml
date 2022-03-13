@@ -1,14 +1,28 @@
 framework:
-    messenger:
-        # Uncomment this (and the failed transport below) to send failed messages to this transport for later handling.
-        # failure_transport: failed
+  messenger:
+    failure_transport: failed
 
-        transports:
-            # https://symfony.com/doc/current/messenger.html#transport-configuration
-             async: '%env(RABBITMQ_URL)%'
-            # failed: 'doctrine://default?queue_name=failed'
-            # sync: 'sync://'
+    transports:
+      async_priority_high:
+        dsn: '%env(RABBITMQ_URL)%'
+        retry_strategy:
+          max_retries: 30
+          delay: 1000
+          multiplier: 2
+          max_delay: 0
 
-        routing:
-            # Route your messages to the transports
-            # 'App\Message\YourMessage': async
+      async_priority_low:
+        dsn: '%env(RABBITMQ_URL)%'
+        retry_strategy:
+          max_retries: 30
+          delay: 1000
+          multiplier: 2
+          max_delay: 0
+
+      failed: 'doctrine://default?queue_name=failed'
+
+    routing:
+      App\Message\CreateGasStationMessage: async_priority_high
+      App\Message\CreateGasServiceMessage: async_priority_low
+      App\Message\CreateGasPriceMessage: async_priority_low
+      App\Message\UpdateGasStationAddress: async_priority_low

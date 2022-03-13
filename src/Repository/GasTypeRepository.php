@@ -45,32 +45,14 @@ class GasTypeRepository extends ServiceEntityRepository
         }
     }
 
-    // /**
-    //  * @return GasType[] Returns an array of GasType objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findGasTypeById()
     {
-        return $this->createQueryBuilder('g')
-            ->andWhere('g.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('g.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $query = $this->createQueryBuilder('t')
+            ->select('t.id, t.reference, t.label')
+            ->orderBy('t.id', 'ASC')
+            ->indexBy('t', 't.id')
+            ->getQuery();
 
-    /*
-    public function findOneBySomeField($value): ?GasType
-    {
-        return $this->createQueryBuilder('g')
-            ->andWhere('g.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return $query->getResult();
     }
-    */
 }

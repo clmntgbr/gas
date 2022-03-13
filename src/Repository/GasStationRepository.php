@@ -45,32 +45,14 @@ class GasStationRepository extends ServiceEntityRepository
         }
     }
 
-    // /**
-    //  * @return GasStation[] Returns an array of GasStation objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findGasStationById()
     {
-        return $this->createQueryBuilder('g')
-            ->andWhere('g.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('g.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $query = $this->createQueryBuilder('s')
+            ->select('s.id')
+            ->orderBy('s.id', 'ASC')
+            ->indexBy('s', 's.id')
+            ->getQuery();
 
-    /*
-    public function findOneBySomeField($value): ?GasStation
-    {
-        return $this->createQueryBuilder('g')
-            ->andWhere('g.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return $query->getResult();
     }
-    */
 }

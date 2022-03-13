@@ -45,32 +45,21 @@ class GasServiceRepository extends ServiceEntityRepository
         }
     }
 
-    // /**
-    //  * @return GasService[] Returns an array of GasService objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findGasServiceByGasStationId()
     {
-        return $this->createQueryBuilder('g')
-            ->andWhere('g.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('g.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $query = "SELECT s.label, t.id
+            FROM gas_stations_services gs
+            INNER JOIN gas_service s ON gs.gas_service_id = s.id
+            INNER JOIN gas_station t ON gs.gas_station_id = t.id";
 
-    /*
-    public function findOneBySomeField($value): ?GasService
-    {
-        return $this->createQueryBuilder('g')
-            ->andWhere('g.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $statement = $this->getEntityManager()->getConnection()->prepare($query);
+        $results = $statement->executeQuery()->fetchAllAssociative();
+
+        $data = [];
+        foreach ($results as $result) {
+            $data[$result['id']][$result['label']] = uniqid();
+        }
+
+        return $data;
     }
-    */
 }

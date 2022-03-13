@@ -84,6 +84,13 @@ class GasStation
         return $this->id;
     }
 
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
     public function getPop(): ?string
     {
         return $this->pop;
@@ -277,5 +284,28 @@ class GasStation
         }
 
         return $this;
+    }
+
+    public function hasGasService(GasService $gasService): bool
+    {
+        return $this->gasServices->contains($gasService);
+    }
+
+    public function getPreviousGasStationStatusHistory(): GasStationStatusHistory
+    {
+        $lastGasStationStatusHistory = $this->gasStationStatusHistories->last();
+        $previousGasStationStatusHistory = null;
+
+        foreach ($this->gasStationStatusHistories as $gasStationStatusHistory) {
+            if ($gasStationStatusHistory->getId() !== $lastGasStationStatusHistory->getId()) {
+                $previousGasStationStatusHistory = $gasStationStatusHistory;
+            }
+        }
+
+        if (null === $previousGasStationStatusHistory) {
+            return $lastGasStationStatusHistory;
+        }
+
+        return $previousGasStationStatusHistory;
     }
 }
