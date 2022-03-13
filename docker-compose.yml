@@ -60,6 +60,7 @@ services:
     hostname: rabbitmq
     networks:
       - traefik
+      - service
     ports:
       - "25672:5672"
     environment:
@@ -82,6 +83,7 @@ services:
     command: bin/maildev --web 80 --smtp 25 --hide-extensions STARTTLS
     networks:
       - traefik
+      - service
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik"
@@ -128,5 +130,6 @@ volumes:
 networks:
   service:
     name: ${PROJECT_NAME}
+    external: true
   traefik:
     name: traefik
