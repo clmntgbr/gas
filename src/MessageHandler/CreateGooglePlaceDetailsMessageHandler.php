@@ -17,8 +17,8 @@ final class CreateGooglePlaceDetailsMessageHandler implements MessageHandlerInte
     public function __construct(
         private GasStationStatusHelper $gasStationStatusHelper,
         private EntityManagerInterface $em,
-        private GooglePlaceApiService $googlePlaceApiService,
-        private GooglePlaceService $googlePlaceService
+        private GooglePlaceApiService  $googlePlaceApiService,
+        private GooglePlaceService     $googlePlaceService
     )
     {
     }

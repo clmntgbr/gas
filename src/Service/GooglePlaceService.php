@@ -16,10 +16,10 @@ use Symfony\Component\Messenger\MessageBusInterface;
 final class GooglePlaceService
 {
     public function __construct(
-        private GasStationRepository $gasStationRepository,
-        private GooglePlaceApiService $googlePlaceApiService,
+        private GasStationRepository   $gasStationRepository,
+        private GooglePlaceApiService  $googlePlaceApiService,
         private GasStationStatusHelper $gasStationStatusHelper,
-        private MessageBusInterface $messageBus,
+        private MessageBusInterface    $messageBus,
         private EntityManagerInterface $em
     )
     {
@@ -76,8 +76,7 @@ final class GooglePlaceService
             ->setOpeningHours($details['opening_hours']['weekday_text'] ?? null)
             ->setUserRatingsTotal($details['user_ratings_total'] ?? null)
             ->setUrl($details['url'] ?? null)
-            ->setWebsite($details['website'] ?? null)
-        ;
+            ->setWebsite($details['website'] ?? null);
 
         $this->em->persist($googlePlace);
     }
@@ -114,8 +113,7 @@ final class GooglePlaceService
         $address
             ->setVicinity($details['formatted_address'] ?? null)
             ->setLongitude($details['geometry']['location']['lng'] ?? null)
-            ->setLatitude($details['geometry']['location']['lat'] ?? null)
-        ;
+            ->setLatitude($details['geometry']['location']['lat'] ?? null);
 
         $this->em->persist($address);
     }

@@ -19,10 +19,10 @@ final class CreateGooglePlaceMessageHandler implements MessageHandlerInterface
 {
     public function __construct(
         private EntityManagerInterface $em,
-        private GasStationRepository $gasStationRepository,
-        private GooglePlaceService $googlePlaceService,
+        private GasStationRepository   $gasStationRepository,
+        private GooglePlaceService     $googlePlaceService,
         private GasStationStatusHelper $gasStationStatusHelper,
-        private MessageBusInterface $messageBus
+        private MessageBusInterface    $messageBus
     )
     {
     }

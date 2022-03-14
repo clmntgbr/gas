@@ -16,7 +16,7 @@ class GasStationsDetailsCommand extends Command
 {
     public function __construct(
         private GooglePlaceService $googlePlaceService,
-        string $name = null
+        string                     $name = null
     )
     {
         parent::__construct($name);
