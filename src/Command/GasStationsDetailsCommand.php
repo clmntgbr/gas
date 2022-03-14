@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Service\GooglePlaceService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -14,6 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class GasStationsDetailsCommand extends Command
 {
     public function __construct(
+        private GooglePlaceService $googlePlaceService,
         string $name = null
     )
     {
@@ -27,6 +29,8 @@ class GasStationsDetailsCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $this->googlePlaceService->update();
+
         return Command::SUCCESS;
     }
 }

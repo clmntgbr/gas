@@ -55,7 +55,7 @@ class GooglePlace
     #[ORM\Column(type: Types::STRING, length: 10, nullable: true)]
     private ?string $userRatingsTotal = null;
 
-    #[ORM\Column(type: Types::STRING, length: 50, nullable: true)]
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     private ?string $icon = null;
 
     #[ORM\Column(type: Types::STRING, length: 50, nullable: true)]
@@ -66,7 +66,7 @@ class GooglePlace
 
     public function __toString(): string
     {
-        return $this->id;
+        return $this->placeId ?? '';
     }
 
     public function getId(): ?int
