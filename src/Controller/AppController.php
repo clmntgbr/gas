@@ -2,11 +2,11 @@
 
 namespace App\Controller;
 
-use App\Service\MailerService;
+use App\Entity\GasStation;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AppController extends AbstractController
@@ -29,15 +29,10 @@ class AppController extends AbstractController
     }
 
     #[Route('/app1', name: 'app_app1')]
-    public function index1(MailerService $mailer): Response
+    public function index1(EntityManagerInterface $em): Response
     {
-        $email = (new Email())
-            ->from('hello@example.com')
-            ->to('you@example.com')
-            ->subject('Time for Symfony Mailer!')
-            ->text('Sending emails is fun again!')
-            ->html('<p>See Twig integration for better HTML integration!</p>');
-
-        $mailer->send($email);
+        $gasStations = $em->getRepository(GasStation::class)->findAll();
+        $gasStation = $gasStations[0];
+        dd($gasStation);
     }
 }

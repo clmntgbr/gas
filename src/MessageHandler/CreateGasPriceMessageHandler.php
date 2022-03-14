@@ -10,6 +10,7 @@ use App\Helper\GasStationStatusHelper;
 use App\Lists\CurrencyReference;
 use App\Lists\GasStationStatusReference;
 use App\Message\CreateGasPriceMessage;
+use App\Service\GasPriceService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
@@ -18,7 +19,8 @@ final class CreateGasPriceMessageHandler implements MessageHandlerInterface
 {
     public function __construct(
         private EntityManagerInterface $em,
-        private GasStationStatusHelper $gasStationStatusHelper
+        private GasStationStatusHelper $gasStationStatusHelper,
+        private GasPriceService $gasPriceService
     )
     {
     }
@@ -59,6 +61,8 @@ final class CreateGasPriceMessageHandler implements MessageHandlerInterface
 
         $this->em->persist($gasPrice);
         $this->em->flush();
+
+        $this->gasPriceService->updateLastGasPrices($gasStation, $gasPrice);
 
         if (GasStationStatusReference::CLOSED === $gasStation->getGasStationStatus()->getReference()) {
             $this->gasStationStatusHelper->setStatus($gasStation->getPreviousGasStationStatusHistory()->getGasStationStatus()->getReference(), $gasStation);

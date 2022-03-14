@@ -55,13 +55,16 @@ class GasStation
     #[ORM\Column(type: Types::ARRAY)]
     private array $element = [];
 
+    /** @var GasService[] */
+    #[ORM\ManyToMany(targetEntity: GasService::class, mappedBy: 'gasStations', cascade: ['persist'])]
+    private $gasServices;
+
     /** @var GasPrice[] */
     #[ORM\OneToMany(mappedBy: 'gasStation', targetEntity: GasPrice::class)]
     private $gasPrices;
 
-    /** @var GasService[] */
-    #[ORM\ManyToMany(targetEntity: GasService::class, mappedBy: 'gasStations', cascade: ['persist'])]
-    private $gasServices;
+    #[ORM\Column(type: Types::JSON)]
+    private array $lastGasPrices = [];
 
     /** @var GasStationStatusHistory[] */
     #[ORM\OneToMany(mappedBy: 'gasStation', targetEntity: GasStationStatusHistory::class)]
@@ -72,6 +75,7 @@ class GasStation
         $this->gasPrices = new ArrayCollection();
         $this->gasServices = new ArrayCollection();
         $this->gasStationStatusHistories = new ArrayCollection();
+        $this->lastGasPrices = [];
     }
 
     public function __toString(): string
@@ -307,5 +311,17 @@ class GasStation
         }
 
         return $previousGasStationStatusHistory;
+    }
+
+    public function getLastGasPrices(): ?array
+    {
+        return $this->lastGasPrices;
+    }
+
+    public function setLastGasPrices(GasType $gasType, GasPrice $gasPrice): self
+    {
+        $this->lastGasPrices[$gasType->getId()] = $gasPrice;
+
+        return $this;
     }
 }

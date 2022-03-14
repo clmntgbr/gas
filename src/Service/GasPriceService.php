@@ -4,6 +4,8 @@ namespace App\Service;
 
 use App\Common\EntityId\GasStationId;
 use App\Common\EntityId\GasTypeId;
+use App\Entity\GasPrice;
+use App\Entity\GasStation;
 use App\Message\CreateGasPriceMessage;
 use Symfony\Component\Messenger\Bridge\Amqp\Transport\AmqpStamp;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -54,5 +56,14 @@ final class GasPriceService
             $date,
             $value
         ), [new AmqpStamp('async-priority-low', AMQP_NOPARAM, [])]);
+    }
+
+    public function updateLastGasPrices(GasStation $gasStation, GasPrice $gasPrice)
+    {
+        $lastGasPrices = $gasStation->getLastGasPrices();
+
+        if (!array_key_exists($gasPrice->getGasType()->getId(), $lastGasPrices)) {
+            $gasStation->setLastGasPrices($gasPrice->getGasType(), $gasPrice);
+        }
     }
 }
