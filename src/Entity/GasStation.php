@@ -66,6 +66,8 @@ class GasStation
     #[ORM\Column(type: Types::JSON)]
     private array $lastGasPrices = [];
 
+    private array $lastGasPricesDecode = [];
+
     /** @var GasStationStatusHistory[] */
     #[ORM\OneToMany(mappedBy: 'gasStation', targetEntity: GasStationStatusHistory::class)]
     private $gasStationStatusHistories;
@@ -318,9 +320,24 @@ class GasStation
         return $this->lastGasPrices;
     }
 
+    public function getLastGasPricesDecode(): ?array
+    {
+        return $this->lastGasPricesDecode;
+    }
+
     public function setLastGasPrices(GasType $gasType, GasPrice $gasPrice): self
     {
-        $this->lastGasPrices[$gasType->getId()] = $gasPrice;
+        $this->lastGasPrices[$gasType->getId()] = [
+            'id' => $gasPrice->getId(),
+            'datetimestamp' => $gasPrice->getDateTimestamp(),
+        ];
+
+        return $this;
+    }
+
+    public function setLastGasPricesDecode(GasType $gasType, GasPrice $gasPrice): self
+    {
+        $this->lastGasPricesDecode[$gasType->getId()] = $gasPrice;
 
         return $this;
     }

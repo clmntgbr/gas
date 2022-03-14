@@ -64,6 +64,11 @@ final class GasPriceService
 
         if (!array_key_exists($gasPrice->getGasType()->getId(), $lastGasPrices)) {
             $gasStation->setLastGasPrices($gasPrice->getGasType(), $gasPrice);
+            return;
+        }
+
+        if ($lastGasPrices[$gasPrice->getGasType()->getId()]['datetimestamp'] <= $gasPrice->getDateTimestamp()) {
+            $gasStation->setLastGasPrices($gasPrice->getGasType(), $gasPrice);
         }
     }
 }

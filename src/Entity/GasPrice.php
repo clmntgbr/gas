@@ -124,4 +124,17 @@ class GasPrice
 
         return $this;
     }
+
+    public function jsonSerialize()
+    {
+        return array(
+            'id' => $this->id,
+            'value'=> $this->value,
+            'gasStationId' => $this->gasStation->getId(),
+            'gasTypeId' => $this->gasType->getId(),
+            'currencyId' => $this->currency->getId(),
+            'dateTimestamp' => $this->dateTimestamp,
+            'date' => $this->date
+        );
+    }
 }

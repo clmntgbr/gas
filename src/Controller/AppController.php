@@ -31,8 +31,7 @@ class AppController extends AbstractController
     #[Route('/app1', name: 'app_app1')]
     public function index1(EntityManagerInterface $em): Response
     {
-        $gasStations = $em->getRepository(GasStation::class)->findAll();
-        $gasStation = $gasStations[0];
+        $gasStation = $em->getRepository(GasStation::class)->findOneBy(['id' => 94120010]);
         dd($gasStation);
     }
 }
