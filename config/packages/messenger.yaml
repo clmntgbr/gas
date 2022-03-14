@@ -41,3 +41,6 @@ framework:
       App\Message\CreateGasPriceMessage: async_priority_low
       App\Message\UpdateGasStationAddress: async_priority_low
       App\Message\MailerMessage: async_priority_high
+      App\Message\CreateGooglePlaceMessage: async_priority_low
+      App\Message\CreateGooglePlaceAnomalyMessage: async_priority_high
+      App\Message\CreateGooglePlaceDetailsMessage: async_priority_low

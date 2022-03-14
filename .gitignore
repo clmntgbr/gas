@@ -12,5 +12,6 @@
 /config/jwt/*.pem
 /.env
 .env
+symfony.lock
 /public/gas_price_instant/
 ###< symfony/framework-bundle ###

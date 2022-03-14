@@ -18,7 +18,11 @@ class GasStationStatusFixtures extends Fixture
             ],
             [
                 'reference' => GasStationStatusReference::NOT_FOUND_IN_TEXTSEARCH,
-                'label' => 'Not Found In TextSearch',
+                'label' => 'Not Found In TextSearch Google API',
+            ],
+            [
+                'reference' => GasStationStatusReference::NOT_FOUND_IN_DETAILS,
+                'label' => 'Not Found In Details Google API',
             ],
             [
                 'reference' => GasStationStatusReference::FOUND_ON_GOV_MAP,
