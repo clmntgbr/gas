@@ -78,6 +78,7 @@ class GasStation
         $this->gasServices = new ArrayCollection();
         $this->gasStationStatusHistories = new ArrayCollection();
         $this->lastGasPrices = [];
+        $this->lastGasPricesDecode = [];
     }
 
     public function __toString(): string

@@ -12,6 +12,7 @@ use App\Message\CreateGasStationMessage;
 use App\Message\UpdateGasStationAddress;
 use App\Service\GasStationService;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Messenger\Bridge\Amqp\Transport\AmqpStamp;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -75,11 +76,11 @@ final class CreateGasStationMessageHandler implements MessageHandlerInterface
             return;
         }
 
-        $this->gasStationService->getGasStationInformationFromGovernment($gasStation);
-
         $this->em->persist($gasStation);
         $this->em->flush();
 
-        $this->messageBus->dispatch(new UpdateGasStationAddress($message->getGasStationId()));
+        $this->messageBus->dispatch(new UpdateGasStationAddress(
+            $message->getGasStationId()
+        ), [new AmqpStamp('async-priority-low', AMQP_NOPARAM, [])]);
     }
 }
