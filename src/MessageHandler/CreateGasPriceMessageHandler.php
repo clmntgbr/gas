@@ -20,7 +20,7 @@ final class CreateGasPriceMessageHandler implements MessageHandlerInterface
     public function __construct(
         private EntityManagerInterface $em,
         private GasStationStatusHelper $gasStationStatusHelper,
-        private GasPriceService $gasPriceService
+        private GasPriceService        $gasPriceService
     )
     {
     }

@@ -16,8 +16,8 @@ final class GasPriceService
     const GAS_PRICE_INSTANT_URL = 'GAS_PRICE_INSTANT_URL';
 
     public function __construct(
-        private DotEnvService          $dotEnvService,
-        private MessageBusInterface    $messageBus
+        private DotEnvService       $dotEnvService,
+        private MessageBusInterface $messageBus
     )
     {
     }

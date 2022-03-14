@@ -129,7 +129,7 @@ class GasPrice
     {
         return array(
             'id' => $this->id,
-            'value'=> $this->value,
+            'value' => $this->value,
             'gasStationId' => $this->gasStation->getId(),
             'gasTypeId' => $this->gasType->getId(),
             'currencyId' => $this->currency->getId(),

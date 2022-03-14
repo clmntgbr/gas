@@ -44,6 +44,13 @@ class GasType
         return $this->id;
     }
 
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
     public function getReference(): ?string
     {
         return $this->reference;
@@ -52,13 +59,6 @@ class GasType
     public function setReference(string $reference): self
     {
         $this->reference = $reference;
-
-        return $this;
-    }
-
-    public function setId(int $id): self
-    {
-        $this->id = $id;
 
         return $this;
     }

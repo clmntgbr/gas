@@ -321,11 +321,6 @@ class GasStation
         return $this->lastGasPrices;
     }
 
-    public function getLastGasPricesDecode(): ?array
-    {
-        return $this->lastGasPricesDecode;
-    }
-
     public function setLastGasPrices(GasType $gasType, GasPrice $gasPrice): self
     {
         $this->lastGasPrices[$gasType->getId()] = [
@@ -334,6 +329,11 @@ class GasStation
         ];
 
         return $this;
+    }
+
+    public function getLastGasPricesDecode(): ?array
+    {
+        return $this->lastGasPricesDecode;
     }
 
     public function setLastGasPricesDecode(GasType $gasType, GasPrice $gasPrice): self
