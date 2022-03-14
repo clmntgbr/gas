@@ -11,5 +11,6 @@
 /vendor/
 /config/jwt/*.pem
 /.env
+.env
 /public/gas_price_instant/
 ###< symfony/framework-bundle ###
