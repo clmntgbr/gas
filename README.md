@@ -15,15 +15,13 @@ backend part for a Gas Price project using PHP8, Nginx, MariaDb, RabbitMQ, MailD
 
 ## Overview
 
-{docker} depends of your PROJECT_NAME avariable in .env
-
 Open `https://traefik.docker.localhost/dashboard/#/` in your favorite web browser for traefik dashboard
 
-Open `https://{docker}-maildev.docker.localhost` in your favorite web browser for maildev
+Open `https://cheapest-maildev.docker.localhost` in your favorite web browser for maildev
 
-Open `https://{docker}-rabbitmq.docker.localhost` in your favorite web browser for rabbitmq
+Open `https://cheapest-rabbitmq.docker.localhost` in your favorite web browser for rabbitmq
 
-Open `https://{docker}.docker.localhost` in your favorite web browser for symfony app
+Open `https://cheapest.docker.localhost` in your favorite web browser for symfony app
 
 ## Features
 
