@@ -1,6 +1,6 @@
 # Gas Price by Gas Stations
 
-A Symfony 6 docker template base project using PHP8, Nginx, MariaDb, RabbitMQ, MailDev.
+backend part for a Gas Price project using PHP8, Nginx, MariaDb, RabbitMQ, MailDev.
 
 ## Getting Started
 
@@ -29,8 +29,10 @@ A Symfony 6 docker template base project using PHP8, Nginx, MariaDb, RabbitMQ, M
 
 ## Helpful commands
 
-`bin/console messenger:consume async_priority_low -vv --queues=messages_low`
+`bin/console app:gas-price-update`
 
-`bin/console messenger:consume async_priority_high -vv --queues=messages_high`
+`bin/console app:gas-stations-details`
+
+`bin/console messenger:consume async_priority_high async_priority_low -vv`
 
 **Enjoy!**
