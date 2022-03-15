@@ -32,4 +32,5 @@ A Symfony 6 docker template base project using PHP8, Nginx, MariaDb, RabbitMQ, M
 `bin/console messenger:consume async_priority_low -vv --queues=messages_low`
 
 `bin/console messenger:consume async_priority_high -vv --queues=messages_high`
+
 **Enjoy!**
