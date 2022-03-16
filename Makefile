@@ -73,7 +73,7 @@ create:
 	$(PHP) bin/console doctrine:database:create --if-not-exists
 
 ## Load fixtures
-load:
+fixture:
 	$(PHP) bin/console doctrine:fixtures:load --no-interaction
 
 ## Making migration file
@@ -98,3 +98,9 @@ gas-details:
 ## Starting consumer
 consume:
 	$(PHP) bin/console messenger:consume async_priority_high async_priority_low -vv
+
+consume-high:
+	$(PHP) bin/console messenger:consume async_priority_high -vv
+
+consume-low:
+	$(PHP) bin/console messenger:consume async_priority_low -vv

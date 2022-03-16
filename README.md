@@ -28,14 +28,18 @@ Open `https://cheapest.docker.localhost` in your favorite web browser for symfon
 * MariaDB 10.4.19
 * MailDev
 * Traefik latest
-* Symfony 6.0.5 with some bundles : `symfony/maker-bundle`, `symfony/web-profiler-bundle`, `symfony/messenger`, etc
+* Symfony 6.0.5
 
 ## Helpful commands
 
-`bin/console app:gas-price-update`
+`make gas-update`
 
-`bin/console app:gas-stations-details`
+`make gas-details`
 
-`bin/console messenger:consume async_priority_high async_priority_low -vv`
+`make consume`
+
+`make consume-high`
+
+`make consume-low`
 
 **Enjoy!**
