@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Common\EntityId\GasStationId;
 use App\Common\EntityId\GasTypeId;
 use App\Common\Exception\GasPriceUpdateServiceException;
+use App\Entity\GasStation;
 use App\Repository\GasServiceRepository;
 use App\Repository\GasStationRepository;
 use App\Repository\GasTypeRepository;
@@ -46,7 +47,7 @@ final class GasPriceUpdateService
         foreach ($elements as $element) {
             $gasStationId = $this->gasStationService->getGasStationId($element);
 
-            if (strpos((string)$gasStationId->getId(), '94') !== 0) {
+            if (!in_array(substr($gasStationId->getId(), 0, 2), ['94', '75', '95', '92', '91', '93'])) {
                 continue;
             }
 
@@ -97,6 +98,17 @@ final class GasPriceUpdateService
 
             if ("" === $date) {
                 continue;
+            }
+
+            $gasStation = $this->gasStationRepository->findOneBy(['id' => $gasStationId->getId()]);
+
+            if ($gasStation instanceof GasStation) {
+                $lastGasPrices = $gasStation->getLastGasPricesDecode();
+                if (array_key_exists($gasTypeId->getId(), $lastGasPrices)) {
+                    if ($lastGasPrices[$gasTypeId->getId()]->getDate()->format('Y-m-d H:i:s') >= $date) {
+                        continue;
+                    }
+                }
             }
 
             $this->gasPriceService->createGasPrice($gasStationId, $gasTypeId, $date, (string)$item->attributes()->valeur);

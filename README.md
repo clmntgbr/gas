@@ -7,6 +7,8 @@ backend part for a Gas Price project using PHP8, Nginx, MariaDb, RabbitMQ, MailD
 1. Clone this repo
 2. Run `cp .env.dist .env`
 3. Edit the .env file to change PROJECT_NAME variable for renaming containers & directory
+4. Run `make build` to build fresh images for docker
+4. Run `make start` to start containers
 4. Run `make init` to initialize the project
 5. You can run `make help` to see all commands available
 

@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 DOCKER_COMPOSE = docker-compose -p cheapest
 
 CONTAINER_NGINX = $$(docker container ls -f "name=cheapest_nginx" -q)
@@ -89,7 +91,7 @@ stan:
 	$(PHP) vendor/bin/phpstan analyse -l 5 src
 
 ## Init project
-init: build start install update drop create migrate
+init: install update drop create migrate fixture
 
 ## Updating gas price
 gas-update:
