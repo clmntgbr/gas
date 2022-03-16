@@ -5,10 +5,9 @@ namespace App\Service;
 use App\Common\EntityId\GasStationId;
 use App\Common\EntityId\GasTypeId;
 use App\Common\Exception\GasPriceUpdateServiceException;
-use App\Entity\GasService;
-use App\Entity\GasStation;
-use App\Entity\GasType;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\GasServiceRepository;
+use App\Repository\GasStationRepository;
+use App\Repository\GasTypeRepository;
 
 final class GasPriceUpdateService
 {
@@ -16,19 +15,21 @@ final class GasPriceUpdateService
     const FILENAME = 'gas-price-instant.zip';
 
     public function __construct(
-        private EntityManagerInterface $em,
-        private GasPriceService        $gasPriceService,
-        private GasStationService      $gasStationService,
-        private GasServiceService      $gasServiceService
+        private GasPriceService      $gasPriceService,
+        private GasStationService    $gasStationService,
+        private GasServiceService    $gasServiceService,
+        private GasStationRepository $gasStationRepository,
+        private GasServiceRepository $gasServiceRepository,
+        private GasTypeRepository    $gasTypeRepository
     )
     {
     }
 
     public function update()
     {
-        $gasStations = $this->em->getRepository(GasStation::class)->findGasStationById();
-        $gasServices = $this->em->getRepository(GasService::class)->findGasServiceByGasStationId();
-        $gasTypes = $this->em->getRepository(GasType::class)->findGasTypeById();
+        $gasStations = $this->gasStationRepository->findGasStationById();
+        $gasServices = $this->gasServiceRepository->findGasServiceByGasStationId();
+        $gasTypes = $this->gasTypeRepository->findGasTypeById();
 
         $xmlPath = $this->gasPriceService->downloadGasPriceFile(
             self::PATH,
@@ -45,7 +46,7 @@ final class GasPriceUpdateService
         foreach ($elements as $element) {
             $gasStationId = $this->gasStationService->getGasStationId($element);
 
-            if (strpos($gasStationId->getId(), '94') !== 0) {
+            if (strpos((string)$gasStationId->getId(), '94') !== 0) {
                 continue;
             }
 
@@ -84,7 +85,7 @@ final class GasPriceUpdateService
         foreach ($element->prix as $item) {
             $gasTypeId = (string)$item->attributes()->id;
 
-            if (null === $gasTypeId || "" === $gasTypeId) {
+            if ("" === $gasTypeId) {
                 continue;
             }
 
@@ -94,7 +95,7 @@ final class GasPriceUpdateService
 
             $date = str_replace("T", " ", substr($date, 0, 19));
 
-            if (null === $date || "" === $date) {
+            if ("" === $date) {
                 continue;
             }
 

@@ -25,7 +25,7 @@ final class GooglePlaceService
     {
     }
 
-    public function update()
+    public function update(): void
     {
         $gasStations = $this->gasStationRepository->getGasStationsUpForDetails();
 
@@ -43,11 +43,14 @@ final class GooglePlaceService
         }
     }
 
-    public function createAnomalies(GasStation $gasStation, array $gasStations)
+    /**
+     * @param array<int, GasStation> $gasStations
+     */
+    public function createAnomalies(GasStation $gasStation, array $gasStations): void
     {
         $gasStationIds = [new GasStationId($gasStation->getId())];
-        foreach ($gasStations as $station) {
-            $gasStationIds[] = new GasStationId($station->getId());
+        foreach ($gasStations as $gasStation) {
+            $gasStationIds[] = new GasStationId($gasStation->getId());
         }
 
         $this->messageBus->dispatch(new CreateGooglePlaceAnomalyMessage(
@@ -58,7 +61,7 @@ final class GooglePlaceService
         $this->em->flush();
     }
 
-    public function updateGasStationGooglePlace(GasStation $gasStation, array $details)
+    public function updateGasStationGooglePlace(GasStation $gasStation, array $details): void
     {
         $googlePlace = $gasStation->getGooglePlace();
 
@@ -81,7 +84,7 @@ final class GooglePlaceService
         $this->em->persist($googlePlace);
     }
 
-    public function updateGasStationAddress(GasStation $gasStation, array $details)
+    public function updateGasStationAddress(GasStation $gasStation, array $details): void
     {
         $address = $gasStation->getAddress();
 

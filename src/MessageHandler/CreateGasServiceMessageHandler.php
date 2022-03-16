@@ -3,9 +3,11 @@
 namespace App\MessageHandler;
 
 use App\Entity\GasService;
-use App\Entity\GasStation;
 use App\Message\CreateGasServiceMessage;
+use App\Repository\GasServiceRepository;
+use App\Repository\GasStationRepository;
 use Cocur\Slugify\Slugify;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
@@ -13,7 +15,9 @@ use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 final class CreateGasServiceMessageHandler implements MessageHandlerInterface
 {
     public function __construct(
-        private EntityManagerInterface $em
+        private EntityManagerInterface $em,
+        private GasStationRepository   $gasStationRepository,
+        private GasServiceRepository   $gasServiceRepository
     )
     {
     }
@@ -21,17 +25,16 @@ final class CreateGasServiceMessageHandler implements MessageHandlerInterface
     public function __invoke(CreateGasServiceMessage $message)
     {
         if (!$this->em->isOpen()) {
-            $this->em = $this->em->create($this->em->getConnection(), $this->em->getConfiguration());
+            $this->em = EntityManager::create($this->em->getConnection(), $this->em->getConfiguration());
         }
 
-        /** @var GasStation $gasStation */
-        $gasStation = $this->em->getRepository(GasStation::class)->findOneBy(['id' => $message->getGasStationId()->getId()]);
+        $gasStation = $this->gasStationRepository->findOneBy(['id' => $message->getGasStationId()->getId()]);
 
         if (null === $gasStation) {
             throw new UnrecoverableMessageHandlingException(sprintf('Gas Station is null (id: %s)', $message->getGasStationId()->getId()));
         }
 
-        $gasService = $this->em->getRepository(GasService::class)->findOneBy(['label' => $message->getLabel()]);
+        $gasService = $this->gasServiceRepository->findOneBy(['label' => $message->getLabel()]);
 
         if ($gasService instanceof GasService) {
             if ($gasStation->hasGasService($gasService)) {

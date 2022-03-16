@@ -11,6 +11,7 @@ use App\Lists\CurrencyReference;
 use App\Lists\GasStationStatusReference;
 use App\Message\CreateGasPriceMessage;
 use App\Service\GasPriceService;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
@@ -28,7 +29,7 @@ final class CreateGasPriceMessageHandler implements MessageHandlerInterface
     public function __invoke(CreateGasPriceMessage $message)
     {
         if (!$this->em->isOpen()) {
-            $this->em = $this->em->create($this->em->getConnection(), $this->em->getConfiguration());
+            $this->em = EntityManager::create($this->em->getConnection(), $this->em->getConfiguration());
         }
 
         /** @var GasStation $gasStation */

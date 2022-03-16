@@ -101,12 +101,12 @@ class GasPrice
         return $this;
     }
 
-    public function getGasType(): ?GasType
+    public function getGasType(): GasType
     {
         return $this->gasType;
     }
 
-    public function setGasType(?GasType $gasType): self
+    public function setGasType(GasType $gasType): self
     {
         $this->gasType = $gasType;
 

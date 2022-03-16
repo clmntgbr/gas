@@ -11,6 +11,7 @@ use App\Lists\GasStationStatusReference;
 use App\Message\CreateGasStationMessage;
 use App\Message\UpdateGasStationAddress;
 use App\Service\GasStationService;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Bridge\Amqp\Transport\AmqpStamp;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
@@ -31,7 +32,7 @@ final class CreateGasStationMessageHandler implements MessageHandlerInterface
     public function __invoke(CreateGasStationMessage $message)
     {
         if (!$this->em->isOpen()) {
-            $this->em = $this->em->create($this->em->getConnection(), $this->em->getConfiguration());
+            $this->em = EntityManager::create($this->em->getConnection(), $this->em->getConfiguration());
         }
 
         $gasStation = $this->em->getRepository(GasStation::class)->findOneBy(['id' => $message->getGasStationId()->getId()]);
@@ -44,8 +45,8 @@ final class CreateGasStationMessageHandler implements MessageHandlerInterface
         $address
             ->setCity($message->getCity())
             ->setPostalCode($message->getCp())
-            ->setLongitude($message->getLongitude() ? $message->getLongitude() / 100000 : null)
-            ->setLatitude($message->getLatitude() ? $message->getLatitude() / 100000 : null)
+            ->setLongitude($message->getLongitude() ? strval(floatval($message->getLongitude()) / 100000) : null)
+            ->setLatitude($message->getLatitude() ? strval(floatval($message->getLatitude()) / 100000) : null)
             ->setCountry($message->getCountry())
             ->setStreet($message->getStreet())
             ->setVicinity(sprintf('%s, %s %s, %s', $message->getStreet(), $message->getCp(), $message->getCity(), $message->getCountry()));

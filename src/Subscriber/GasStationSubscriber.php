@@ -23,7 +23,7 @@ class GasStationSubscriber implements EventSubscriber
         ];
     }
 
-    public function postLoad(LifecycleEventArgs $args)
+    public function postLoad(LifecycleEventArgs $args): void
     {
         $entity = $args->getObject();
 

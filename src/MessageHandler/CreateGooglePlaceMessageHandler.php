@@ -9,6 +9,7 @@ use App\Message\CreateGooglePlaceDetailsMessage;
 use App\Message\CreateGooglePlaceMessage;
 use App\Repository\GasStationRepository;
 use App\Service\GooglePlaceService;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Bridge\Amqp\Transport\AmqpStamp;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
@@ -30,7 +31,7 @@ final class CreateGooglePlaceMessageHandler implements MessageHandlerInterface
     public function __invoke(CreateGooglePlaceMessage $message)
     {
         if (!$this->em->isOpen()) {
-            $this->em = $this->em->create($this->em->getConnection(), $this->em->getConfiguration());
+            $this->em = EntityManager::create($this->em->getConnection(), $this->em->getConfiguration());
         }
 
         $gasStation = $this->gasStationRepository->findOneBy(['id' => $message->getGasStationId()->getId()]);

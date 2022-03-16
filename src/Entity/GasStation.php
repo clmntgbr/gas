@@ -170,7 +170,7 @@ class GasStation
         return $this;
     }
 
-    public function getAddress(): ?Address
+    public function getAddress(): Address
     {
         return $this->address;
     }
@@ -194,7 +194,7 @@ class GasStation
         return $this;
     }
 
-    public function getGooglePlace(): ?GooglePlace
+    public function getGooglePlace(): GooglePlace
     {
         return $this->googlePlace;
     }
@@ -316,7 +316,7 @@ class GasStation
         return $previousGasStationStatusHistory;
     }
 
-    public function getLastGasPrices(): ?array
+    public function getLastGasPrices(): array
     {
         return $this->lastGasPrices;
     }

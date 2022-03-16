@@ -8,6 +8,7 @@ use App\Lists\GasStationStatusReference;
 use App\Message\CreateGooglePlaceDetailsMessage;
 use App\Service\GooglePlaceApiService;
 use App\Service\GooglePlaceService;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
@@ -26,7 +27,7 @@ final class CreateGooglePlaceDetailsMessageHandler implements MessageHandlerInte
     public function __invoke(CreateGooglePlaceDetailsMessage $message)
     {
         if (!$this->em->isOpen()) {
-            $this->em = $this->em->create($this->em->getConnection(), $this->em->getConfiguration());
+            $this->em = EntityManager::create($this->em->getConnection(), $this->em->getConfiguration());
         }
 
         $gasStation = $this->em->getRepository(GasStation::class)->findOneBy(['id' => $message->getGasStationId()->getId()]);

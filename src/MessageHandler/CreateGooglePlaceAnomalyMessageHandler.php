@@ -6,6 +6,7 @@ use App\Entity\GasStation;
 use App\Helper\GasStationStatusHelper;
 use App\Lists\GasStationStatusReference;
 use App\Message\CreateGooglePlaceAnomalyMessage;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
@@ -22,7 +23,7 @@ final class CreateGooglePlaceAnomalyMessageHandler implements MessageHandlerInte
     public function __invoke(CreateGooglePlaceAnomalyMessage $message)
     {
         if (!$this->em->isOpen()) {
-            $this->em = $this->em->create($this->em->getConnection(), $this->em->getConfiguration());
+            $this->em = EntityManager::create($this->em->getConnection(), $this->em->getConfiguration());
         }
 
         foreach ($message->getGasStationIds() as $gasStationId) {
