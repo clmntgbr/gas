@@ -2,10 +2,10 @@
 
 namespace App\MessageHandler;
 
-use App\Entity\GasStation;
 use App\Helper\GasStationStatusHelper;
 use App\Lists\GasStationStatusReference;
 use App\Message\CreateGooglePlaceAnomalyMessage;
+use App\Repository\GasStationRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
@@ -15,7 +15,8 @@ final class CreateGooglePlaceAnomalyMessageHandler implements MessageHandlerInte
 {
     public function __construct(
         private GasStationStatusHelper $gasStationStatusHelper,
-        private EntityManagerInterface $em
+        private EntityManagerInterface $em,
+        private GasStationRepository   $gasStationRepository
     )
     {
     }
@@ -27,7 +28,7 @@ final class CreateGooglePlaceAnomalyMessageHandler implements MessageHandlerInte
         }
 
         foreach ($message->getGasStationIds() as $gasStationId) {
-            $gasStation = $this->em->getRepository(GasStation::class)->findOneBy(['id' => $gasStationId->getId()]);
+            $gasStation = $this->gasStationRepository->findOneBy(['id' => $gasStationId->getId()]);
 
             if (null === $gasStation) {
                 throw new UnrecoverableMessageHandlingException(sprintf('Gas Station is null (id: %s', $gasStationId->getId()));

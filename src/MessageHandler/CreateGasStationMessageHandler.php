@@ -10,6 +10,7 @@ use App\Helper\GasStationStatusHelper;
 use App\Lists\GasStationStatusReference;
 use App\Message\CreateGasStationMessage;
 use App\Message\UpdateGasStationAddress;
+use App\Repository\GasStationRepository;
 use App\Service\GasStationService;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -24,7 +25,8 @@ final class CreateGasStationMessageHandler implements MessageHandlerInterface
         private EntityManagerInterface $em,
         private GasStationStatusHelper $gasStationStatusHelper,
         private GasStationService      $gasStationService,
-        private MessageBusInterface    $messageBus
+        private MessageBusInterface    $messageBus,
+        private GasStationRepository   $gasStationRepository
     )
     {
     }
@@ -35,7 +37,7 @@ final class CreateGasStationMessageHandler implements MessageHandlerInterface
             $this->em = EntityManager::create($this->em->getConnection(), $this->em->getConfiguration());
         }
 
-        $gasStation = $this->em->getRepository(GasStation::class)->findOneBy(['id' => $message->getGasStationId()->getId()]);
+        $gasStation = $this->gasStationRepository->findOneBy(['id' => $message->getGasStationId()->getId()]);
 
         if ($gasStation instanceof GasStation) {
             throw new UnrecoverableMessageHandlingException(sprintf('Gas Station already exist (id : %s)', $message->getGasStationId()->getId()));

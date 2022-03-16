@@ -3,23 +3,22 @@
 namespace App\Helper;
 
 use App\Entity\GasStation;
-use App\Entity\GasStationStatus;
 use App\Entity\GasStationStatusHistory;
+use App\Repository\GasStationStatusRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class GasStationStatusHelper
 {
-    /** @var EntityManagerInterface */
-    private $em;
-
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(
+        private EntityManagerInterface     $em,
+        private GasStationStatusRepository $gasStationStatusRepository
+    )
     {
-        $this->em = $em;
     }
 
     public function setStatus(string $reference, GasStation $gasStation)
     {
-        $gasStationStatus = $this->em->getRepository(GasStationStatus::class)->findOneBy(['reference' => $reference]);
+        $gasStationStatus = $this->gasStationStatusRepository->findOneBy(['reference' => $reference]);
 
         if (null === $gasStationStatus) {
             throw new \Exception(sprintf('Gas Station Status don\'t exist (reference : %s', $reference));

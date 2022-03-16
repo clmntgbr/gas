@@ -2,10 +2,10 @@
 
 namespace App\MessageHandler;
 
-use App\Entity\GasStation;
 use App\Helper\GasStationStatusHelper;
 use App\Lists\GasStationStatusReference;
 use App\Message\CreateGooglePlaceDetailsMessage;
+use App\Repository\GasStationRepository;
 use App\Service\GooglePlaceApiService;
 use App\Service\GooglePlaceService;
 use Doctrine\ORM\EntityManager;
@@ -19,7 +19,8 @@ final class CreateGooglePlaceDetailsMessageHandler implements MessageHandlerInte
         private GasStationStatusHelper $gasStationStatusHelper,
         private EntityManagerInterface $em,
         private GooglePlaceApiService  $googlePlaceApiService,
-        private GooglePlaceService     $googlePlaceService
+        private GooglePlaceService     $googlePlaceService,
+        private GasStationRepository   $gasStationRepository
     )
     {
     }
@@ -30,7 +31,7 @@ final class CreateGooglePlaceDetailsMessageHandler implements MessageHandlerInte
             $this->em = EntityManager::create($this->em->getConnection(), $this->em->getConfiguration());
         }
 
-        $gasStation = $this->em->getRepository(GasStation::class)->findOneBy(['id' => $message->getGasStationId()->getId()]);
+        $gasStation = $this->gasStationRepository->findOneBy(['id' => $message->getGasStationId()->getId()]);
 
         if (null === $gasStation) {
             throw new UnrecoverableMessageHandlingException(sprintf('Gas Station is null (id: %s', $message->getGasStationId()->getId()));

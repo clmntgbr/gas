@@ -2,14 +2,15 @@
 
 namespace App\MessageHandler;
 
-use App\Entity\Currency;
 use App\Entity\GasPrice;
 use App\Entity\GasStation;
-use App\Entity\GasType;
 use App\Helper\GasStationStatusHelper;
 use App\Lists\CurrencyReference;
 use App\Lists\GasStationStatusReference;
 use App\Message\CreateGasPriceMessage;
+use App\Repository\CurrencyRepository;
+use App\Repository\GasStationRepository;
+use App\Repository\GasTypeRepository;
 use App\Service\GasPriceService;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,7 +22,10 @@ final class CreateGasPriceMessageHandler implements MessageHandlerInterface
     public function __construct(
         private EntityManagerInterface $em,
         private GasStationStatusHelper $gasStationStatusHelper,
-        private GasPriceService        $gasPriceService
+        private GasPriceService        $gasPriceService,
+        private GasStationRepository   $gasStationRepository,
+        private GasTypeRepository      $gasTypeRepository,
+        private CurrencyRepository     $currencyRepository
     )
     {
     }
@@ -33,19 +37,19 @@ final class CreateGasPriceMessageHandler implements MessageHandlerInterface
         }
 
         /** @var GasStation $gasStation */
-        $gasStation = $this->em->getRepository(GasStation::class)->findOneBy(['id' => $message->getGasStationId()->getId()]);
+        $gasStation = $this->gasStationRepository->findOneBy(['id' => $message->getGasStationId()->getId()]);
 
         if (null === $gasStation) {
             throw new UnrecoverableMessageHandlingException(sprintf('Gas Station is null (id: %s)', $message->getGasStationId()->getId()));
         }
 
-        $gasType = $this->em->getRepository(GasType::class)->findOneBy(['id' => $message->getGasTypeId()->getId()]);
+        $gasType = $this->gasTypeRepository->findOneBy(['id' => $message->getGasTypeId()->getId()]);
 
         if (null === $gasType) {
             throw new UnrecoverableMessageHandlingException(sprintf('Gas Type is null (id: %s)', $message->getGasTypeId()->getId()));
         }
 
-        $currency = $this->em->getRepository(Currency::class)->findOneBy(['reference' => CurrencyReference::EUR]);
+        $currency = $this->currencyRepository->findOneBy(['reference' => CurrencyReference::EUR]);
 
         if (null === $currency) {
             throw new UnrecoverableMessageHandlingException('Currency is null (reference: eur)');
