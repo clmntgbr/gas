@@ -30,7 +30,7 @@ class GasType
     #[ORM\Column(type: Types::STRING, length: 50)]
     private string $label;
 
-    /** @var GasPrice[] */
+    /** @var Collection<int, GasPrice> */
     #[ORM\OneToMany(mappedBy: 'gasType', targetEntity: GasPrice::class)]
     private $gasPrices;
 
@@ -95,12 +95,7 @@ class GasType
 
     public function removeGasPrice(GasPrice $gasPrice): self
     {
-        if ($this->gasPrices->removeElement($gasPrice)) {
-            // set the owning side to null (unless already changed)
-            if ($gasPrice->getGasType() === $this) {
-                $gasPrice->setGasType(null);
-            }
-        }
+        $this->gasPrices->removeElement($gasPrice);
 
         return $this;
     }

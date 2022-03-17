@@ -30,13 +30,14 @@ class GasService
     #[ORM\Column(type: Types::STRING, length: 150)]
     private string $label;
 
-    /** @var GasStation[] */
+    /** @var Collection<int, GasStation> */
     #[ORM\ManyToMany(targetEntity: GasStation::class, inversedBy: 'gasServices', fetch: 'EXTRA_LAZY')]
     #[ORM\JoinTable(name: 'gas_stations_services')]
     private $gasStations;
 
     public function __construct()
     {
+        $this->id = rand();
         $this->gasStations = new ArrayCollection();
     }
 

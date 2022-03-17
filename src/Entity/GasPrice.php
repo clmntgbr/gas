@@ -43,9 +43,14 @@ class GasPrice
     #[ORM\JoinColumn(nullable: false)]
     private Currency $currency;
 
+    public function __construct()
+    {
+        $this->id = rand();
+    }
+
     public function __toString(): string
     {
-        return $this->id;
+        return (string)$this->id;
     }
 
     public function getId(): ?int

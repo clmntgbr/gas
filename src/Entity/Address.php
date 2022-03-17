@@ -49,9 +49,14 @@ class Address
     #[ORM\Column(type: Types::STRING, length: 50)]
     private string $latitude;
 
+    public function __construct()
+    {
+        $this->id = rand();
+    }
+
     public function __toString(): string
     {
-        return $this->id;
+        return (string)$this->id;
     }
 
     public function getId(): ?int

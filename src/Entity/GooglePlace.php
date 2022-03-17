@@ -64,6 +64,11 @@ class GooglePlace
     #[ORM\Column(type: 'array', nullable: true)]
     private ?array $openingHours = [];
 
+    public function __construct()
+    {
+        $this->id = rand();
+    }
+
     public function __toString(): string
     {
         return $this->placeId ?? '';

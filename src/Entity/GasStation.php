@@ -55,11 +55,11 @@ class GasStation
     #[ORM\Column(type: Types::ARRAY)]
     private array $element = [];
 
-    /** @var GasService[] */
+    /** @var Collection<int, GasService> */
     #[ORM\ManyToMany(targetEntity: GasService::class, mappedBy: 'gasStations', cascade: ['persist'])]
     private $gasServices;
 
-    /** @var GasPrice[] */
+    /** @var Collection<int, GasPrice> */
     #[ORM\OneToMany(mappedBy: 'gasStation', targetEntity: GasPrice::class)]
     private $gasPrices;
 
@@ -68,7 +68,7 @@ class GasStation
 
     private array $lastGasPricesDecode = [];
 
-    /** @var GasStationStatusHistory[] */
+    /** @var Collection<int, GasStationStatusHistory> */
     #[ORM\OneToMany(mappedBy: 'gasStation', targetEntity: GasStationStatusHistory::class)]
     private $gasStationStatusHistories;
 
@@ -91,7 +91,7 @@ class GasStation
         return $this->id;
     }
 
-    public function setId(int $id): self
+    public function setId(string $id): self
     {
         $this->id = $id;
 

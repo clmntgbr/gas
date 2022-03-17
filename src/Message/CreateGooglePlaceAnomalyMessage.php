@@ -11,7 +11,7 @@ final class CreateGooglePlaceAnomalyMessage
     {
     }
 
-    /** @var GasStationId[] */
+    /** @return GasStationId[] */
     public function getGasStationIds()
     {
         return $this->gasStationIds;

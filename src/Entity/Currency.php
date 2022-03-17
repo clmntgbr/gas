@@ -27,12 +27,13 @@ class Currency
     #[ORM\Column(type: Types::STRING, length: 50)]
     private string $label;
 
-    /** @var GasPrice[] */
+    /** @var Collection<int, GasPrice> */
     #[ORM\OneToMany(mappedBy: 'currency', targetEntity: GasPrice::class)]
     private $gasPrices;
 
     public function __construct()
     {
+        $this->id = rand();
         $this->gasPrices = new ArrayCollection();
     }
 

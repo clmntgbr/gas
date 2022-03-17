@@ -63,7 +63,7 @@ final class CreateGasStationMessageHandler implements MessageHandlerInterface
 
         $gasStation = new GasStation();
         $gasStation
-            ->setId($message->getGasStationId()->getId())
+            ->setId((string)$message->getGasStationId()->getId())
             ->setPop($message->getPop())
             ->setElement($message->getElement())
             ->setAddress($address)

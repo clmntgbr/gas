@@ -3,7 +3,6 @@
 namespace App\MessageHandler;
 
 use App\Entity\GasPrice;
-use App\Entity\GasStation;
 use App\Helper\GasStationStatusHelper;
 use App\Lists\CurrencyReference;
 use App\Lists\GasStationStatusReference;
@@ -36,7 +35,6 @@ final class CreateGasPriceMessageHandler implements MessageHandlerInterface
             $this->em = EntityManager::create($this->em->getConnection(), $this->em->getConfiguration());
         }
 
-        /** @var GasStation $gasStation */
         $gasStation = $this->gasStationRepository->findOneBy(['id' => $message->getGasStationId()->getId()]);
 
         if (null === $gasStation) {

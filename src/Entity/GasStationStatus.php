@@ -25,6 +25,11 @@ class GasStationStatus
     #[ORM\Column(type: Types::STRING, length: 50)]
     private string $label;
 
+    public function __construct()
+    {
+        $this->id = rand();
+    }
+
     public function __toString(): string
     {
         return $this->label;

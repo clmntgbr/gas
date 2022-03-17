@@ -37,6 +37,11 @@ class Media
     #[ORM\Column(type: Types::FLOAT, nullable: true)]
     private ?float $size = null;
 
+    public function __construct()
+    {
+        $this->id = rand();
+    }
+
     public function __toString(): string
     {
         return sprintf("%s/%s", $this->path, $this->name);

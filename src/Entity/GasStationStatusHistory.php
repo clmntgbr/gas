@@ -30,6 +30,11 @@ class GasStationStatusHistory
     #[ORM\JoinColumn(nullable: false)]
     private GasStationStatus $gasStationStatus;
 
+    public function __construct()
+    {
+        $this->id = rand();
+    }
+
     public function __toString(): string
     {
         return $this->gasStationStatus->getLabel();

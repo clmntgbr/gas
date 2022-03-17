@@ -35,9 +35,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     private ?string $plainPassword;
 
+    public function __construct()
+    {
+        $this->id = rand();
+    }
+
     public function __toString(): string
     {
-        return $this->id;
+        return (string)$this->id;
     }
 
     public function getId(): ?int
