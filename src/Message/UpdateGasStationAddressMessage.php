@@ -4,7 +4,7 @@ namespace App\Message;
 
 use App\Common\EntityId\GasStationId;
 
-final class UpdateGasStationAddress
+final class UpdateGasStationAddressMessage
 {
     public function __construct(
         private GasStationId $gasStationId

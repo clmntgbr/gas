@@ -101,6 +101,10 @@ gas-update:
 gas-details:
 	$(PHP) bin/console app:gas-stations-details
 
+## Searching gas stations who are closed
+gas-closed:
+	$(PHP) bin/console app:gas-stations-closed
+
 ## Starting consumer
 consume:
 	$(PHP) bin/console messenger:consume async_priority_high async_priority_low -vv

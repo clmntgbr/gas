@@ -63,4 +63,30 @@ class GasPriceRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    public function getGasPriceCountByGasStation(GasStation $gasStation)
+    {
+        $query = "  SELECT count(*) as gas_price_count
+                    FROM gas_price p
+                    WHERE p.gas_station_id = %s;";
+
+        $query = sprintf($query, $gasStation->getId());
+
+        $statement = $this->getEntityManager()->getConnection()->prepare($query);
+        return $statement->executeQuery()->fetchAssociative();
+
+    }
+
+    public function findLastGasPriceByGasStation(GasStation $gasStation)
+    {
+        return $this->createQueryBuilder('g')
+            ->where('g.gasStation = :gs')
+            ->setParameters([
+                'gs' => $gasStation,
+            ])
+            ->orderBy('g.id', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

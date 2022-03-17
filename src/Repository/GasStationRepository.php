@@ -46,6 +46,21 @@ class GasStationRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * @return GasStation[]|null
+     */
+    public function findGasStationStatusNotClosed()
+    {
+        $query = $this->createQueryBuilder('s')
+            ->select('s')
+            ->innerJoin('s.gasStationStatus', 'ss')
+            ->where('ss.reference != :reference')
+            ->setParameter('reference', GasStationStatusReference::CLOSED)
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
     public function findGasStationById()
     {
         $query = $this->createQueryBuilder('s')

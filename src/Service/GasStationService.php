@@ -8,6 +8,9 @@ use App\Entity\GasStation;
 use App\Helper\GasStationStatusHelper;
 use App\Lists\GasStationStatusReference;
 use App\Message\CreateGasStationMessage;
+use App\Message\UpdateGasStationIsClosedMessage;
+use App\Repository\GasPriceRepository;
+use App\Repository\GasStationRepository;
 use GuzzleHttp\Client;
 use Symfony\Component\Messenger\Bridge\Amqp\Transport\AmqpStamp;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -19,7 +22,9 @@ final class GasStationService
 
     public function __construct(
         private MessageBusInterface    $messageBus,
-        private GasStationStatusHelper $gasStationStatusHelper
+        private GasStationStatusHelper $gasStationStatusHelper,
+        private GasStationRepository   $gasStationRepository,
+        private GasPriceRepository     $gasPriceRepository
     )
     {
     }
@@ -109,5 +114,31 @@ final class GasStationService
 
             $this->gasStationStatusHelper->setStatus(GasStationStatusReference::FOUND_ON_GOV_MAP, $gasStation);
         }
+    }
+
+    public function updateGasStationsClosed()
+    {
+        $gasStations = $this->gasStationRepository->findGasStationStatusNotClosed();
+
+        foreach ($gasStations as $gasStation) {
+            $result = $this->gasPriceRepository->getGasPriceCountByGasStation($gasStation);
+            if (array_key_exists('gas_price_count', $result) && $result['gas_price_count'] == 0) {
+                $this->gasStationIsClosedMessageDispatch($gasStation);
+                continue;
+            }
+
+            $date = ((new \DateTime('now'))->sub(new \DateInterval('P6M')));
+            $gasPrice = $this->gasPriceRepository->findLastGasPriceByGasStation($gasStation);
+            if ($date > $gasPrice->getDate()) {
+                $this->gasStationIsClosedMessageDispatch($gasStation);
+            }
+        }
+    }
+
+    private function gasStationIsClosedMessageDispatch(GasStation $gasStation)
+    {
+        $this->messageBus->dispatch(new UpdateGasStationIsClosedMessage(
+            new GasStationId($gasStation->getId())
+        ), [new AmqpStamp('async-priority-high', AMQP_NOPARAM, [])]);
     }
 }

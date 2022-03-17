@@ -9,7 +9,7 @@ use App\Entity\Media;
 use App\Helper\GasStationStatusHelper;
 use App\Lists\GasStationStatusReference;
 use App\Message\CreateGasStationMessage;
-use App\Message\UpdateGasStationAddress;
+use App\Message\UpdateGasStationAddressMessage;
 use App\Repository\GasStationRepository;
 use App\Service\GasStationService;
 use Doctrine\ORM\EntityManager;
@@ -82,7 +82,7 @@ final class CreateGasStationMessageHandler implements MessageHandlerInterface
         $this->em->persist($gasStation);
         $this->em->flush();
 
-        $this->messageBus->dispatch(new UpdateGasStationAddress(
+        $this->messageBus->dispatch(new UpdateGasStationAddressMessage(
             $message->getGasStationId()
         ), [new AmqpStamp('async-priority-low', AMQP_NOPARAM, [])]);
     }

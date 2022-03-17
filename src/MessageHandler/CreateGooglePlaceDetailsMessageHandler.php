@@ -51,7 +51,7 @@ final class CreateGooglePlaceDetailsMessageHandler implements MessageHandlerInte
         $gasStation->setName($details['name'] ?? null);
 
         $this->googlePlaceService->updateGasStationGooglePlace($gasStation, $details);
-        $this->googlePlaceService->updateGasStationAddress($gasStation, $details);
+        $this->googlePlaceService->UpdateGasStationAddressMessage($gasStation, $details);
 
         $this->gasStationStatusHelper->setStatus(GasStationStatusReference::WAITING_VALIDATION, $gasStation);
 

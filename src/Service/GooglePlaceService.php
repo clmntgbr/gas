@@ -84,7 +84,7 @@ final class GooglePlaceService
         $this->em->persist($googlePlace);
     }
 
-    public function updateGasStationAddress(GasStation $gasStation, array $details): void
+    public function UpdateGasStationAddressMessage(GasStation $gasStation, array $details): void
     {
         $address = $gasStation->getAddress();
 
