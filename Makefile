@@ -88,7 +88,7 @@ migrate:
 
 ## Applying migration
 stan:
-	$(PHP) vendor/bin/phpstan analyse -l 7 src
+	$(PHP) vendor/bin/phpstan analyse -l 9 src
 
 ## Init project
 init: install update drop create migrate fixture

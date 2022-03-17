@@ -22,6 +22,10 @@ final class UpdateGasStationAddressMessageHandler implements MessageHandlerInter
     {
     }
 
+    /**
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\ORM\ORMException
+     */
     public function __invoke(UpdateGasStationAddressMessage $message): void
     {
         if (!$this->em->isOpen()) {

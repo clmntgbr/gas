@@ -14,6 +14,9 @@ final class MailerMessageHandler implements MessageHandlerInterface
     {
     }
 
+    /**
+     * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
+     */
     public function __invoke(MailerMessage $message): void
     {
         $this->mailer->send($message->getEmail());

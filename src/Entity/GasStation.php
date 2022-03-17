@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Api\Controller\GetGasStationsMap;
 use App\Repository\GasStationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -12,7 +13,15 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: GasStationRepository::class)]
 #[ApiResource(
-    collectionOperations: ['get'],
+    collectionOperations: [
+        'get',
+        'get_gas_stations_map' => [
+            'method' => 'GET',
+            'path' => '/gas_stations/map',
+            'controller' => GetGasStationsMap::class,
+            'pagination' => false
+        ],
+    ],
     itemOperations: ['get']
 )]
 class GasStation
@@ -172,7 +181,7 @@ class GasStation
         return $this->gasStationStatus;
     }
 
-    public function setGasStationStatus(?GasStationStatus $gasStationStatus): self
+    public function setGasStationStatus(GasStationStatus $gasStationStatus): self
     {
         $this->gasStationStatus = $gasStationStatus;
 
@@ -196,7 +205,7 @@ class GasStation
         return $this->preview;
     }
 
-    public function setPreview(?Media $preview): self
+    public function setPreview(Media $preview): self
     {
         $this->preview = $preview;
 
@@ -208,7 +217,7 @@ class GasStation
         return $this->googlePlace;
     }
 
-    public function setGooglePlace(?GooglePlace $googlePlace): self
+    public function setGooglePlace(GooglePlace $googlePlace): self
     {
         $this->googlePlace = $googlePlace;
 
@@ -235,12 +244,7 @@ class GasStation
 
     public function removeGasPrice(GasPrice $gasPrice): self
     {
-        if ($this->gasPrices->removeElement($gasPrice)) {
-            // set the owning side to null (unless already changed)
-            if ($gasPrice->getGasStation() === $this) {
-                $gasPrice->setGasStation(null);
-            }
-        }
+        $this->gasPrices->removeElement($gasPrice);
 
         return $this;
     }
@@ -292,12 +296,7 @@ class GasStation
 
     public function removeGasStationStatusHistory(GasStationStatusHistory $gasStationStatusHistory): self
     {
-        if ($this->gasStationStatusHistories->removeElement($gasStationStatusHistory)) {
-            // set the owning side to null (unless already changed)
-            if ($gasStationStatusHistory->getGasStation() === $this) {
-                $gasStationStatusHistory->setGasStation(null);
-            }
-        }
+        $this->gasStationStatusHistories->removeElement($gasStationStatusHistory);
 
         return $this;
     }
@@ -307,7 +306,7 @@ class GasStation
         return $this->gasServices->contains($gasService);
     }
 
-    public function getPreviousGasStationStatusHistory(): GasStationStatusHistory
+    public function getPreviousGasStationStatusHistory(): ?GasStationStatusHistory
     {
         $lastGasStationStatusHistory = $this->gasStationStatusHistories->last();
         $previousGasStationStatusHistory = null;

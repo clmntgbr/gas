@@ -99,7 +99,7 @@ class GasPrice
         return $this->gasStation;
     }
 
-    public function setGasStation(?GasStation $gasStation): self
+    public function setGasStation(GasStation $gasStation): self
     {
         $this->gasStation = $gasStation;
 
@@ -118,12 +118,12 @@ class GasPrice
         return $this;
     }
 
-    public function getCurrency(): ?Currency
+    public function getCurrency(): Currency
     {
         return $this->currency;
     }
 
-    public function setCurrency(?Currency $currency): self
+    public function setCurrency(Currency $currency): self
     {
         $this->currency = $currency;
 

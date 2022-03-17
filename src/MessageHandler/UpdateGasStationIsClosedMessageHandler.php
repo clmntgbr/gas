@@ -22,6 +22,10 @@ final class UpdateGasStationIsClosedMessageHandler implements MessageHandlerInte
     {
     }
 
+    /**
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\ORM\ORMException
+     */
     public function __invoke(UpdateGasStationIsClosedMessage $message): void
     {
         if (!$this->em->isOpen()) {

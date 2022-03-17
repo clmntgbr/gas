@@ -50,7 +50,7 @@ class GasStationStatusHistory
         return $this->gasStation;
     }
 
-    public function setGasStation(?GasStation $gasStation): self
+    public function setGasStation(GasStation $gasStation): self
     {
         $this->gasStation = $gasStation;
 
@@ -62,7 +62,7 @@ class GasStationStatusHistory
         return $this->gasStationStatus;
     }
 
-    public function setGasStationStatus(?GasStationStatus $gasStationStatus): self
+    public function setGasStationStatus(GasStationStatus $gasStationStatus): self
     {
         $this->gasStationStatus = $gasStationStatus;
 

@@ -86,12 +86,7 @@ class Currency
 
     public function removeGasPrice(GasPrice $gasPrice): self
     {
-        if ($this->gasPrices->removeElement($gasPrice)) {
-            // set the owning side to null (unless already changed)
-            if ($gasPrice->getCurrency() === $this) {
-                $gasPrice->setCurrency(null);
-            }
-        }
+        $this->gasPrices->removeElement($gasPrice);
 
         return $this;
     }

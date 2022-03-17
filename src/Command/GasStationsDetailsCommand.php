@@ -24,7 +24,7 @@ class GasStationsDetailsCommand extends Command
 
     protected function configure(): void
     {
-        $this->setDescription(self::getDefaultDescription());
+        $this->setDescription(self::getDescription());
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
