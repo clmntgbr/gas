@@ -25,7 +25,7 @@ final class CreateGooglePlaceDetailsMessageHandler implements MessageHandlerInte
     {
     }
 
-    public function __invoke(CreateGooglePlaceDetailsMessage $message)
+    public function __invoke(CreateGooglePlaceDetailsMessage $message): void
     {
         if (!$this->em->isOpen()) {
             $this->em = EntityManager::create($this->em->getConnection(), $this->em->getConfiguration());

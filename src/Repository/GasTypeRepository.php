@@ -13,6 +13,8 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method GasType|null findOneBy(array $criteria, array $orderBy = null)
  * @method GasType[]    findAll()
  * @method GasType[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ *
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<GasType>
  */
 class GasTypeRepository extends ServiceEntityRepository
 {
@@ -45,7 +47,11 @@ class GasTypeRepository extends ServiceEntityRepository
         }
     }
 
-    public function findGasTypeById()
+    /**
+     * @return mixed[]
+     * @throws \Doctrine\ORM\Query\QueryException
+     */
+    public function findGasTypeById(): array
     {
         $query = $this->createQueryBuilder('t')
             ->select('t.id, t.reference, t.label')

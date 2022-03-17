@@ -29,7 +29,7 @@ final class CreateGasPriceMessageHandler implements MessageHandlerInterface
     {
     }
 
-    public function __invoke(CreateGasPriceMessage $message)
+    public function __invoke(CreateGasPriceMessage $message): void
     {
         if (!$this->em->isOpen()) {
             $this->em = EntityManager::create($this->em->getConnection(), $this->em->getConfiguration());

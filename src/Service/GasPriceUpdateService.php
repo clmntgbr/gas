@@ -26,7 +26,7 @@ final class GasPriceUpdateService
     {
     }
 
-    public function update()
+    public function update(): void
     {
         $gasStations = $this->gasStationRepository->findGasStationById();
         $gasServices = $this->gasServiceRepository->findGasServiceByGasStationId();
@@ -65,6 +65,9 @@ final class GasPriceUpdateService
         FileSystemService::delete($xmlPath);
     }
 
+    /**
+     * @param array<mixed> $gasServices
+     */
     private function getGasService(GasStationId $gasStationId, \SimpleXMLElement $element, array $gasServices): void
     {
         foreach ((array)$element->services->service as $item) {
@@ -81,6 +84,9 @@ final class GasPriceUpdateService
         }
     }
 
+    /**
+     * @param array<mixed> $gasTypes
+     */
     private function getGasPrices(GasStationId $gasStationId, \SimpleXMLElement $element, array $gasTypes): void
     {
         foreach ($element->prix as $item) {

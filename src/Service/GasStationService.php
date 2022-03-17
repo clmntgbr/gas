@@ -40,7 +40,10 @@ final class GasStationService
         return new GasStationId($gasStationId);
     }
 
-    public function isGasStationClosed(array $element, GasStation $gasStation)
+    /**
+     * @param array<mixed> $element
+     */
+    public function isGasStationClosed(array $element, GasStation $gasStation): void
     {
         if (isset($element['fermeture']['attributes']['type']) && "D" == $element['fermeture']['attributes']['type']) {
             $gasStation
@@ -63,7 +66,7 @@ final class GasStationService
         ), [new AmqpStamp('async-priority-high', AMQP_NOPARAM, [])]);
     }
 
-    public function getGasStationInformationFromGovernment(GasStation $gasStation)
+    public function getGasStationInformationFromGovernment(GasStation $gasStation): void
     {
         $client = new Client();
 
@@ -116,7 +119,7 @@ final class GasStationService
         }
     }
 
-    public function updateGasStationsClosed()
+    public function updateGasStationsClosed(): void
     {
         $gasStations = $this->gasStationRepository->findGasStationStatusNotClosed();
 
@@ -135,7 +138,7 @@ final class GasStationService
         }
     }
 
-    private function gasStationIsClosedMessageDispatch(GasStation $gasStation)
+    private function gasStationIsClosedMessageDispatch(GasStation $gasStation): void
     {
         $this->messageBus->dispatch(new UpdateGasStationIsClosedMessage(
             new GasStationId($gasStation->getId())

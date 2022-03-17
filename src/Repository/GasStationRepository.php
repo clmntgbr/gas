@@ -14,6 +14,8 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method GasStation|null findOneBy(array $criteria, array $orderBy = null)
  * @method GasStation[]    findAll()
  * @method GasStation[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ *
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<GasStation>
  */
 class GasStationRepository extends ServiceEntityRepository
 {
@@ -61,6 +63,10 @@ class GasStationRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+    /**
+     * @return mixed[]
+     * @throws \Doctrine\ORM\Query\QueryException
+     */
     public function findGasStationById()
     {
         $query = $this->createQueryBuilder('s')
@@ -72,6 +78,11 @@ class GasStationRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+
+    /**
+     * @return mixed[]
+     * @throws \Doctrine\ORM\Query\QueryException
+     */
     public function getGasStationsUpForDetails()
     {
         $query = $this->createQueryBuilder('s')
@@ -85,6 +96,11 @@ class GasStationRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+
+    /**
+     * @return mixed[]
+     * @throws \Doctrine\ORM\Query\QueryException
+     */
     public function getGasStationGooglePlaceByPlaceId(string $placeId)
     {
         $query = $this->createQueryBuilder('s')

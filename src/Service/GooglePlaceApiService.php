@@ -21,7 +21,9 @@ class GooglePlaceApiService
         $this->client = new Client();
     }
 
-    /** @return array|null */
+    /**
+     * @return array<mixed>|null
+     */
     public function textSearch(GasStation $gasStation)
     {
         $response = $this->client->request("GET", sprintf(self::TEXT_SEARCH_URL, $gasStation->getAddress()->getStreet(), $this->key));
@@ -34,7 +36,9 @@ class GooglePlaceApiService
         return null;
     }
 
-    /** @return array|null */
+    /**
+     * @return array<mixed>|null
+     */
     public function placeDetails(GasStation $gasStation)
     {
         $response = $this->client->request("GET", sprintf(self::PLACE_DETAILS_URL, $gasStation->getGooglePlace()->getPlaceId(), $this->key));

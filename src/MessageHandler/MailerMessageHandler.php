@@ -14,7 +14,7 @@ final class MailerMessageHandler implements MessageHandlerInterface
     {
     }
 
-    public function __invoke(MailerMessage $message)
+    public function __invoke(MailerMessage $message): void
     {
         $this->mailer->send($message->getEmail());
     }

@@ -61,6 +61,9 @@ final class GooglePlaceService
         $this->em->flush();
     }
 
+    /**
+     * @param array<mixed> $details
+     */
     public function updateGasStationGooglePlace(GasStation $gasStation, array $details): void
     {
         $googlePlace = $gasStation->getGooglePlace();
@@ -84,6 +87,9 @@ final class GooglePlaceService
         $this->em->persist($googlePlace);
     }
 
+    /**
+     * @param array<mixed> $details
+     */
     public function UpdateGasStationAddressMessage(GasStation $gasStation, array $details): void
     {
         $address = $gasStation->getAddress();

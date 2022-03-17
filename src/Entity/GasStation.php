@@ -52,8 +52,9 @@ class GasStation
     #[ORM\JoinColumn(nullable: false)]
     private GooglePlace $googlePlace;
 
+    /** @var array<mixed> $element */
     #[ORM\Column(type: Types::ARRAY)]
-    private array $element = [];
+    private $element = [];
 
     /** @var Collection<int, GasService> */
     #[ORM\ManyToMany(targetEntity: GasService::class, mappedBy: 'gasStations', cascade: ['persist'])]
@@ -63,10 +64,12 @@ class GasStation
     #[ORM\OneToMany(mappedBy: 'gasStation', targetEntity: GasPrice::class)]
     private $gasPrices;
 
+    /** @var array<mixed> $lastGasPrices */
     #[ORM\Column(type: Types::JSON)]
-    private array $lastGasPrices = [];
+    private $lastGasPrices = [];
 
-    private array $lastGasPricesDecode = [];
+    /** @var array<mixed> $lastGasPricesDecode */
+    private $lastGasPricesDecode = [];
 
     /** @var Collection<int, GasStationStatusHistory> */
     #[ORM\OneToMany(mappedBy: 'gasStation', targetEntity: GasStationStatusHistory::class)]
@@ -86,7 +89,7 @@ class GasStation
         return $this->id;
     }
 
-    public function getId(): ?string
+    public function getId(): string
     {
         return $this->id;
     }
@@ -146,11 +149,17 @@ class GasStation
         return $this;
     }
 
-    public function getElement(): ?array
+    /**
+     * @return array<mixed>
+     */
+    public function getElement()
     {
         return $this->element;
     }
 
+    /**
+     * @param array<mixed> $element
+     */
     public function setElement(array $element): self
     {
         $this->element = $element;
@@ -316,7 +325,10 @@ class GasStation
         return $previousGasStationStatusHistory;
     }
 
-    public function getLastGasPrices(): array
+    /**
+     * @return array<mixed>
+     */
+    public function getLastGasPrices()
     {
         return $this->lastGasPrices;
     }
@@ -331,6 +343,9 @@ class GasStation
         return $this;
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function getLastGasPricesDecode(): ?array
     {
         return $this->lastGasPricesDecode;

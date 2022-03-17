@@ -22,7 +22,7 @@ final class UpdateGasStationAddressMessageHandler implements MessageHandlerInter
     {
     }
 
-    public function __invoke(UpdateGasStationAddressMessage $message)
+    public function __invoke(UpdateGasStationAddressMessage $message): void
     {
         if (!$this->em->isOpen()) {
             $this->em = EntityManager::create($this->em->getConnection(), $this->em->getConfiguration());

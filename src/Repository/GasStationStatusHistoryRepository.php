@@ -13,6 +13,8 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method GasStationStatusHistory|null findOneBy(array $criteria, array $orderBy = null)
  * @method GasStationStatusHistory[]    findAll()
  * @method GasStationStatusHistory[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ *
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<GasStationStatusHistory>
  */
 class GasStationStatusHistoryRepository extends ServiceEntityRepository
 {
@@ -44,33 +46,4 @@ class GasStationStatusHistoryRepository extends ServiceEntityRepository
             $this->_em->flush();
         }
     }
-
-    // /**
-    //  * @return GasStationStatusHistory[] Returns an array of GasStationStatusHistory objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('g')
-            ->andWhere('g.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('g.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?GasStationStatusHistory
-    {
-        return $this->createQueryBuilder('g')
-            ->andWhere('g.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

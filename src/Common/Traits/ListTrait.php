@@ -6,6 +6,9 @@ use ReflectionClass;
 
 trait ListTrait
 {
+    /**
+     * @return array<mixed>
+     */
     public static function getConstantsList(): array
     {
         $class = new ReflectionClass(__CLASS__);

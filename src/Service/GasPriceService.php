@@ -48,7 +48,7 @@ final class GasPriceService
         return $xmlPath;
     }
 
-    public function createGasPrice(GasStationId $gasStationId, GasTypeId $gasTypeId, string $date, string $value)
+    public function createGasPrice(GasStationId $gasStationId, GasTypeId $gasTypeId, string $date, string $value): void
     {
         $this->messageBus->dispatch(new CreateGasPriceMessage(
             $gasStationId,
@@ -58,7 +58,7 @@ final class GasPriceService
         ), [new AmqpStamp('async-priority-low', AMQP_NOPARAM, [])]);
     }
 
-    public function updateLastGasPrices(GasStation $gasStation, GasPrice $gasPrice)
+    public function updateLastGasPrices(GasStation $gasStation, GasPrice $gasPrice): void
     {
         $lastGasPrices = $gasStation->getLastGasPrices();
 

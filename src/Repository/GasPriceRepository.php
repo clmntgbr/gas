@@ -15,6 +15,8 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method GasPrice|null findOneBy(array $criteria, array $orderBy = null)
  * @method GasPrice[]    findAll()
  * @method GasPrice[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ *
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<GasPrice>
  */
 class GasPriceRepository extends ServiceEntityRepository
 {
@@ -47,7 +49,10 @@ class GasPriceRepository extends ServiceEntityRepository
         }
     }
 
-    public function findLastGasPriceByTypeAndGasStationExceptId(GasStation $gasStation, GasType $gasType, int $gasPriceId)
+    /**
+     * @throws \Doctrine\ORM\Query\QueryException
+     */
+    public function findLastGasPriceByTypeAndGasStationExceptId(GasStation $gasStation, GasType $gasType, int $gasPriceId): ?GasPrice
     {
         return $this->createQueryBuilder('g')
             ->where('g.gasStation = :gs')
@@ -64,6 +69,11 @@ class GasPriceRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
+
+    /**
+     * @return mixed[]
+     * @throws \Doctrine\ORM\Query\QueryException
+     */
     public function getGasPriceCountByGasStation(GasStation $gasStation)
     {
         $query = "  SELECT count(*) as gas_price_count
@@ -77,7 +87,11 @@ class GasPriceRepository extends ServiceEntityRepository
 
     }
 
-    public function findLastGasPriceByGasStation(GasStation $gasStation)
+
+    /**
+     * @throws \Doctrine\ORM\Query\QueryException
+     */
+    public function findLastGasPriceByGasStation(GasStation $gasStation): ?GasPrice
     {
         return $this->createQueryBuilder('g')
             ->where('g.gasStation = :gs')

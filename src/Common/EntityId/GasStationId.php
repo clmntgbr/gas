@@ -4,15 +4,13 @@ namespace App\Common\EntityId;
 
 final class GasStationId
 {
-    /** @var int */
-    private $id;
-
-    public function __construct($id)
+    public function __construct(
+        private string $id
+    )
     {
-        $this->id = (int)$id;
     }
 
-    public function getId(): int
+    public function getId(): string
     {
         return $this->id;
     }

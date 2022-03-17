@@ -61,8 +61,9 @@ class GooglePlace
     #[ORM\Column(type: Types::STRING, length: 50, nullable: true)]
     private ?string $businessStatus = null;
 
-    #[ORM\Column(type: 'array', nullable: true)]
-    private ?array $openingHours = [];
+    /** @var array<mixed>|null $openingHours */
+    #[ORM\Column(type: Types::ARRAY, nullable: true)]
+    private $openingHours = [];
 
     public function __construct()
     {
@@ -235,11 +236,17 @@ class GooglePlace
         return $this;
     }
 
+    /**
+     * @return array<mixed>|null
+     */
     public function getOpeningHours(): ?array
     {
         return $this->openingHours;
     }
 
+    /**
+     * @param array<mixed>|null $openingHours
+     */
     public function setOpeningHours(?array $openingHours): self
     {
         $this->openingHours = $openingHours;

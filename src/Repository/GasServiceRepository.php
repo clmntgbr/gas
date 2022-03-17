@@ -13,6 +13,8 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method GasService|null findOneBy(array $criteria, array $orderBy = null)
  * @method GasService[]    findAll()
  * @method GasService[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ *
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<GasService>
  */
 class GasServiceRepository extends ServiceEntityRepository
 {
@@ -45,6 +47,10 @@ class GasServiceRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * @return mixed[]
+     * @throws \Doctrine\ORM\Query\QueryException
+     */
     public function findGasServiceByGasStationId()
     {
         $query = "SELECT s.label, t.id

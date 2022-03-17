@@ -13,6 +13,8 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method GooglePlace|null findOneBy(array $criteria, array $orderBy = null)
  * @method GooglePlace[]    findAll()
  * @method GooglePlace[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ *
+ * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<GooglePlace>
  */
 class GooglePlaceRepository extends ServiceEntityRepository
 {
@@ -44,33 +46,4 @@ class GooglePlaceRepository extends ServiceEntityRepository
             $this->_em->flush();
         }
     }
-
-    // /**
-    //  * @return GooglePlace[] Returns an array of GooglePlace objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('g')
-            ->andWhere('g.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('g.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?GooglePlace
-    {
-        return $this->createQueryBuilder('g')
-            ->andWhere('g.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

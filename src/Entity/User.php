@@ -27,8 +27,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::STRING, length: 200)]
     private string $email;
 
+    /** @var array<mixed> $roles */
     #[ORM\Column(type: Types::JSON)]
-    private array $roles = [];
+    private $roles = [];
 
     #[ORM\Column(type: Types::STRING, length: 255)]
     private string $password;
@@ -66,6 +67,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
+     * @return array<mixed>
      * @see UserInterface
      */
     public function getRoles(): array
@@ -76,6 +78,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
+    /**
+     * @param array<mixed> $roles
+     */
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
@@ -86,7 +91,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see UserInterface
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         $this->plainPassword = null;
     }

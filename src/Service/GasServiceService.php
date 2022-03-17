@@ -15,7 +15,7 @@ final class GasServiceService
     {
     }
 
-    public function createGasService(GasStationId $gasStationId, string $item)
+    public function createGasService(GasStationId $gasStationId, string $item): void
     {
         $this->messageBus->dispatch(new CreateGasServiceMessage(
             $gasStationId,

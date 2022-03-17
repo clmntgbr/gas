@@ -21,7 +21,7 @@ final class CreateGooglePlaceAnomalyMessageHandler implements MessageHandlerInte
     {
     }
 
-    public function __invoke(CreateGooglePlaceAnomalyMessage $message)
+    public function __invoke(CreateGooglePlaceAnomalyMessage $message): void
     {
         if (!$this->em->isOpen()) {
             $this->em = EntityManager::create($this->em->getConnection(), $this->em->getConfiguration());

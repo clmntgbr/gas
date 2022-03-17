@@ -21,7 +21,7 @@ final class UpdateGasStationIsClosedMessageHandler implements MessageHandlerInte
     {
     }
 
-    public function __invoke(UpdateGasStationIsClosedMessage $message)
+    public function __invoke(UpdateGasStationIsClosedMessage $message): void
     {
         if (!$this->em->isOpen()) {
             $this->em = EntityManager::create($this->em->getConnection(), $this->em->getConfiguration());

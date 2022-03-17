@@ -10,7 +10,7 @@ class ApiAddressService
 {
     const API_ADDRESS_URL = 'https://api-adresse.data.gouv.fr/search/?q=%s&limit=1';
 
-    public function update(GasStation $gasStation)
+    public function update(GasStation $gasStation): void
     {
         $client = new Client();
 
@@ -35,7 +35,10 @@ class ApiAddressService
         }
     }
 
-    private function updateAddress(GasStation $gasStation, array $data)
+    /**
+     * @param array<mixed> $data
+     */
+    private function updateAddress(GasStation $gasStation, array $data): void
     {
         $address = $gasStation->getAddress();
 

@@ -16,7 +16,7 @@ class GasStationStatusHelper
     {
     }
 
-    public function setStatus(string $reference, GasStation $gasStation)
+    public function setStatus(string $reference, GasStation $gasStation): void
     {
         $gasStationStatus = $this->gasStationStatusRepository->findOneBy(['reference' => $reference]);
 

@@ -31,7 +31,7 @@ final class CreateGasStationMessageHandler implements MessageHandlerInterface
     {
     }
 
-    public function __invoke(CreateGasStationMessage $message)
+    public function __invoke(CreateGasStationMessage $message): void
     {
         if (!$this->em->isOpen()) {
             $this->em = EntityManager::create($this->em->getConnection(), $this->em->getConfiguration());

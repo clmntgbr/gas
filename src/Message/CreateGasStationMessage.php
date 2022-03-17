@@ -6,6 +6,9 @@ use App\Common\EntityId\GasStationId;
 
 final class CreateGasStationMessage
 {
+    /**
+     * @param array<mixed> $element
+     */
     public function __construct(
         private GasStationId $gasStationId,
         private string       $pop,
@@ -60,7 +63,10 @@ final class CreateGasStationMessage
         return $this->country;
     }
 
-    public function getElement(): array
+    /**
+     * @return array<mixed>
+     */
+    public function getElement()
     {
         return $this->element;
     }
