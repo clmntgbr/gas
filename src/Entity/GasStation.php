@@ -313,12 +313,12 @@ class GasStation
         $previousGasStationStatusHistory = null;
 
         foreach ($this->gasStationStatusHistories as $gasStationStatusHistory) {
-            if ($gasStationStatusHistory->getId() !== $lastGasStationStatusHistory->getId()) {
+            if ($lastGasStationStatusHistory !== false && $gasStationStatusHistory->getId() !== $lastGasStationStatusHistory->getId()) {
                 $previousGasStationStatusHistory = $gasStationStatusHistory;
             }
         }
 
-        if (null === $previousGasStationStatusHistory) {
+        if ($lastGasStationStatusHistory !== false && null === $previousGasStationStatusHistory) {
             return $lastGasStationStatusHistory;
         }
 

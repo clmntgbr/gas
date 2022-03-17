@@ -13,6 +13,7 @@ use App\Repository\GasTypeRepository;
 use App\Service\GasPriceService;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Safe\DateTimeImmutable;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
@@ -58,7 +59,7 @@ final class CreateGasPriceMessageHandler implements MessageHandlerInterface
             ->setCurrency($currency)
             ->setGasType($gasType)
             ->setGasStation($gasStation)
-            ->setDate(\DateTimeImmutable::createFromFormat('Y-m-d H:i:s', str_replace("T", " ", substr($message->getDate(), 0, 19))))
+            ->setDate(DateTimeImmutable::createFromFormat('Y-m-d H:i:s', str_replace("T", " ", substr($message->getDate(), 0, 19))))
             ->setDateTimestamp($gasPrice->getDate()->getTimestamp())
             ->setValue((int)str_replace([',', '.'], '', $message->getValue()));
 

@@ -8,6 +8,7 @@ use App\Message\UpdateGasStationIsClosedMessage;
 use App\Repository\GasStationRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Safe\DateTimeImmutable;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
@@ -33,7 +34,7 @@ final class UpdateGasStationIsClosedMessageHandler implements MessageHandlerInte
             throw new UnrecoverableMessageHandlingException(sprintf('Gas Station is null (id: %s)', $message->getGasStationId()->getId()));
         }
 
-        $gasStation->setClosedAt(new \DateTimeImmutable('now'));
+        $gasStation->setClosedAt(new DateTimeImmutable());
         $this->gasStationStatusHelper->setStatus(GasStationStatusReference::CLOSED, $gasStation);
     }
 }

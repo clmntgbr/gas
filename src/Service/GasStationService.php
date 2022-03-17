@@ -12,6 +12,8 @@ use App\Message\UpdateGasStationIsClosedMessage;
 use App\Repository\GasPriceRepository;
 use App\Repository\GasStationRepository;
 use GuzzleHttp\Client;
+use Safe;
+use Safe\DateTimeImmutable;
 use Symfony\Component\Messenger\Bridge\Amqp\Transport\AmqpStamp;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -47,7 +49,7 @@ final class GasStationService
     {
         if (isset($element['fermeture']['attributes']['type']) && "D" == $element['fermeture']['attributes']['type']) {
             $gasStation
-                ->setClosedAt(\DateTimeImmutable::createFromFormat('Y-m-d H:i:s', str_replace("T", " ", substr($element['fermeture']['attributes']['debut'], 0, 19))));
+                ->setClosedAt(DateTimeImmutable::createFromFormat('Y-m-d H:i:s', str_replace("T", " ", substr($element['fermeture']['attributes']['debut'], 0, 19))));
         }
     }
 
@@ -62,7 +64,7 @@ final class GasStationService
             (string)$element->adresse,
             (string)$element->ville,
             "FRANCE",
-            json_decode(str_replace("@", "", json_encode($element)), true)
+            Safe\json_decode(str_replace("@", "", Safe\json_encode($element)), true)
         ), [new AmqpStamp('async-priority-high', AMQP_NOPARAM, [])]);
     }
 
@@ -130,7 +132,7 @@ final class GasStationService
                 continue;
             }
 
-            $date = ((new \DateTime('now'))->sub(new \DateInterval('P6M')));
+            $date = ((new Safe\DateTime('now'))->sub(new \DateInterval('P6M')));
             $gasPrice = $this->gasPriceRepository->findLastGasPriceByGasStation($gasStation);
             if ($date > $gasPrice->getDate()) {
                 $this->gasStationIsClosedMessageDispatch($gasStation);

@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\GasStation;
 use GuzzleHttp\Client;
+use Safe;
 
 class GooglePlaceApiService
 {
@@ -27,7 +28,7 @@ class GooglePlaceApiService
     public function textSearch(GasStation $gasStation)
     {
         $response = $this->client->request("GET", sprintf(self::TEXT_SEARCH_URL, $gasStation->getAddress()->getStreet(), $this->key));
-        $response = json_decode($response->getBody()->getContents(), true);
+        $response = Safe\json_decode($response->getBody()->getContents(), true);
 
         if (array_key_exists('status', $response) && array_key_exists('results', $response) && $response['status'] === 'OK' && count($response['results']) > 0 && array_key_exists('place_id', $response['results'][0])) {
             return $response['results'][0];
@@ -42,7 +43,7 @@ class GooglePlaceApiService
     public function placeDetails(GasStation $gasStation)
     {
         $response = $this->client->request("GET", sprintf(self::PLACE_DETAILS_URL, $gasStation->getGooglePlace()->getPlaceId(), $this->key));
-        $response = json_decode($response->getBody()->getContents(), true);
+        $response = Safe\json_decode($response->getBody()->getContents(), true);
 
         if (array_key_exists('status', $response) && array_key_exists('result', $response) && $response['status'] === 'OK' && count($response['result']) > 0) {
             return $response['result'];

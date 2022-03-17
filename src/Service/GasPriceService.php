@@ -41,7 +41,7 @@ final class GasPriceService
 
         FileSystemService::delete($path, $name);
 
-        if (false === $xmlPath = FileSystemService::find($path, "%\.($type)$%i")) {
+        if (null === $xmlPath = FileSystemService::find($path, "%\.($type)$%i")) {
             throw new \Exception();
         }
 

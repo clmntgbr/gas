@@ -510,6 +510,12 @@
     "symfony/yaml": {
         "version": "v6.0.3"
     },
+    "thecodingmachine/phpstan-safe-rule": {
+        "version": "v1.2.0"
+    },
+    "thecodingmachine/safe": {
+        "version": "v2.1.2"
+    },
     "twig/twig": {
         "version": "v3.3.8"
     },

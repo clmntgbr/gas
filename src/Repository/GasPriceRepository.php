@@ -71,7 +71,7 @@ class GasPriceRepository extends ServiceEntityRepository
 
 
     /**
-     * @return mixed[]
+     * @return array<mixed>
      * @throws \Doctrine\ORM\Query\QueryException
      */
     public function getGasPriceCountByGasStation(GasStation $gasStation)
@@ -83,8 +83,12 @@ class GasPriceRepository extends ServiceEntityRepository
         $query = sprintf($query, $gasStation->getId());
 
         $statement = $this->getEntityManager()->getConnection()->prepare($query);
-        return $statement->executeQuery()->fetchAssociative();
+        $result = $statement->executeQuery()->fetchAssociative();
+        if (false === $result) {
+            throw new \Exception('Sql issue');
+        }
 
+        return $result;
     }
 
 

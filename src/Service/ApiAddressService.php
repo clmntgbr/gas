@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\GasStation;
 use GuzzleHttp\Client;
+use Safe;
 use Symfony\Component\HttpFoundation\Response;
 
 class ApiAddressService
@@ -19,7 +20,7 @@ class ApiAddressService
             sprintf(self::API_ADDRESS_URL, trim(strtolower(str_replace([',', 'France'], '', $gasStation->getAddress()->getStreet()))))
         );
 
-        $content = json_decode($response->getBody()->getContents(), true);
+        $content = Safe\json_decode($response->getBody()->getContents(), true);
 
         if (Response::HTTP_OK !== $response->getStatusCode()) {
             return;

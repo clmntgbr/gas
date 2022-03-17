@@ -4,11 +4,11 @@ namespace App\Service;
 
 use App\Common\EntityId\GasStationId;
 use App\Common\EntityId\GasTypeId;
-use App\Common\Exception\GasPriceUpdateServiceException;
 use App\Entity\GasStation;
 use App\Repository\GasServiceRepository;
 use App\Repository\GasStationRepository;
 use App\Repository\GasTypeRepository;
+use Safe;
 
 final class GasPriceUpdateService
 {
@@ -38,11 +38,7 @@ final class GasPriceUpdateService
             GasPriceService::GAS_PRICE_FILE_TYPE
         );
 
-        $elements = simplexml_load_file($xmlPath);
-
-        if (false === $elements) {
-            throw new GasPriceUpdateServiceException(GasPriceUpdateServiceException::GAS_PRICE_INSTANT_EMPTY);
-        }
+        $elements = Safe\simplexml_load_file($xmlPath);
 
         foreach ($elements as $element) {
             $gasStationId = $this->gasStationService->getGasStationId($element);
