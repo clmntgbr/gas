@@ -7,23 +7,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 class GasStationMapDto
 {
     /**
-     * @var string
-     * @Assert\NotNull()
-     * @Assert\NotBlank()
+     * @var GasStationMapDataDto
+     * @Assert\Valid()
      */
-    public $longitude;
+    public array $gasStationMapData;
 
-    /**
-     * @var string
-     * @Assert\NotNull()
-     * @Assert\NotBlank()
-     */
-    public $latitude;
-
-    /**
-     * @var string
-     * @Assert\NotNull()
-     * @Assert\NotBlank()
-     */
-    public $radius;
+    public array $lowGasPrices;
 }

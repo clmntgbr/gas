@@ -20,6 +20,10 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
+    App\Api\Controller\:
+        resource: '../src/Api/Controller/'
+        tags: [ 'controller.service_arguments' ]
+
     App\Subscriber\GasStationSubscriber:
         tags:
             - { name: doctrine.event_subscriber, connection: default }

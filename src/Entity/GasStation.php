@@ -17,9 +17,9 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
         'get',
         'get_gas_stations_map' => [
             'method' => 'GET',
-            'path' => '/gas_stations/map',
+            'path' => '/map/gas_stations',
             'controller' => GetGasStationsMap::class,
-            'pagination' => false
+            'pagination_enabled' => false
         ],
     ],
     itemOperations: ['get']
@@ -337,6 +337,9 @@ class GasStation
         $this->lastGasPrices[$gasType->getId()] = [
             'id' => $gasPrice->getId(),
             'datetimestamp' => $gasPrice->getDateTimestamp(),
+            'gasPriceValue' => $gasPrice->getValue(),
+            'gasTypeId' => $gasPrice->getGasType()->getId(),
+            'gasTypeLabel' => $gasPrice->getGasType()->getLabel(),
         ];
 
         return $this;

@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\GasStation;
-use App\Entity\GooglePlace;
 use App\Lists\GasStationStatusReference;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
@@ -99,7 +98,7 @@ class GasStationRepository extends ServiceEntityRepository
 
 
     /**
-     * @return GooglePlace[]
+     * @return GasStation[]
      * @throws \Doctrine\ORM\Query\QueryException
      */
     public function getGasStationGooglePlaceByPlaceId(string $placeId)
@@ -117,8 +116,8 @@ class GasStationRepository extends ServiceEntityRepository
     public function getGasStationsForMap(string $longitude, string $latitude, string $radius)
     {
         $query = "  SELECT s.id as gas_station_id, m.path as preview_path, m.name as preview_name, s.address_id, s.company, 
-                    JSON_KEYS(s.last_gas_prices) as gas_types, 
-                    s.name as gas_station_name, s.last_gas_prices, s.previous_gas_prices, s.gas_station_status_id, s.google_place_id, a.vicinity,  a.longitude,  a.latitude,
+                    s.last_gas_prices as gas_types, 
+                    s.name as gas_station_name, s.last_gas_prices, s.gas_station_status_id, s.google_place_id, a.vicinity,  a.longitude,  a.latitude,
                     p.url,
                     (SQRT(POW(69.1 * (a.latitude - $latitude), 2) + POW(69.1 * ($longitude - a.longitude) * COS(a.latitude / 57.3), 2))*1000) as distance,
                     (SELECT GROUP_CONCAT(gs.label SEPARATOR ', ')
