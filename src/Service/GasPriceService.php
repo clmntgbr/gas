@@ -7,6 +7,7 @@ use App\Common\EntityId\GasTypeId;
 use App\Entity\GasPrice;
 use App\Entity\GasStation;
 use App\Message\CreateGasPriceMessage;
+use App\Repository\GasPriceRepository;
 use Symfony\Component\Messenger\Bridge\Amqp\Transport\AmqpStamp;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -17,7 +18,8 @@ final class GasPriceService
 
     public function __construct(
         private DotEnvService       $dotEnvService,
-        private MessageBusInterface $messageBus
+        private MessageBusInterface $messageBus,
+        private GasPriceRepository  $gasPriceRepository
     )
     {
     }
@@ -56,6 +58,23 @@ final class GasPriceService
             $date,
             $value
         ), [new AmqpStamp('async-priority-low', AMQP_NOPARAM, [])]);
+    }
+
+    /**
+     * @throws \Doctrine\ORM\Query\QueryException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function updatePreviousGasPrices(GasStation $gasStation): void
+    {
+        $lastGasPrices = $gasStation->getLastGasPricesDecode();
+
+        foreach ($lastGasPrices as $lastGasPrice) {
+            $gasPrice = $this->gasPriceRepository->findLastGasPriceByTypeAndGasStationExceptId($gasStation, $lastGasPrice->getGasType(), $lastGasPrice);
+            if (null === $gasPrice) {
+                continue;
+            }
+            $gasStation->setPreviousGasPrices($gasPrice->getGasType(), $gasPrice);
+        }
     }
 
     public function updateLastGasPrices(GasStation $gasStation, GasPrice $gasPrice): void

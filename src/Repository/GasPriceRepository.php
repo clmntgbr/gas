@@ -51,6 +51,7 @@ class GasPriceRepository extends ServiceEntityRepository
 
     /**
      * @throws \Doctrine\ORM\Query\QueryException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function findLastGasPriceByTypeAndGasStationExceptId(GasStation $gasStation, GasType $gasType, int $gasPriceId): ?GasPrice
     {

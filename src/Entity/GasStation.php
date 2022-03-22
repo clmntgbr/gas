@@ -77,6 +77,10 @@ class GasStation
     #[ORM\Column(type: Types::JSON)]
     private $lastGasPrices = [];
 
+    /** @var array<mixed> $lastGasPrices */
+    #[ORM\Column(type: Types::JSON)]
+    private $previousGasPrices = [];
+
     /** @var array<mixed> $lastGasPricesDecode */
     private $lastGasPricesDecode = [];
 
@@ -90,6 +94,7 @@ class GasStation
         $this->gasServices = new ArrayCollection();
         $this->gasStationStatusHistories = new ArrayCollection();
         $this->lastGasPrices = [];
+        $this->previousGasPrices = [];
         $this->lastGasPricesDecode = [];
     }
 
@@ -332,23 +337,41 @@ class GasStation
         return $this->lastGasPrices;
     }
 
+    /**
+     * @return array<mixed>
+     */
+    public function getPreviousGasPrices()
+    {
+        return $this->previousGasPrices;
+    }
+
+    public function setPreviousGasPrices(GasType $gasType, GasPrice $gasPrice): self
+    {
+        $this->previousGasPrices[$gasType->getId()] = $this->hydrateGasPrices($gasPrice);
+        return $this;
+    }
+
     public function setLastGasPrices(GasType $gasType, GasPrice $gasPrice): self
     {
-        $this->lastGasPrices[$gasType->getId()] = [
+        $this->lastGasPrices[$gasType->getId()] = $this->hydrateGasPrices($gasPrice);
+        return $this;
+    }
+
+    private function hydrateGasPrices(GasPrice $gasPrice)
+    {
+        return [
             'id' => $gasPrice->getId(),
             'datetimestamp' => $gasPrice->getDateTimestamp(),
             'gasPriceValue' => $gasPrice->getValue(),
             'gasTypeId' => $gasPrice->getGasType()->getId(),
             'gasTypeLabel' => $gasPrice->getGasType()->getLabel(),
         ];
-
-        return $this;
     }
 
     /**
-     * @return array<mixed>
+     * @return GasPrice[]
      */
-    public function getLastGasPricesDecode(): ?array
+    public function getLastGasPricesDecode()
     {
         return $this->lastGasPricesDecode;
     }
