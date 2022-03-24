@@ -16,7 +16,7 @@ class GasStationSubscriber implements EventSubscriber
     {
     }
 
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return [
             Events::postLoad
@@ -46,7 +46,7 @@ class GasStationSubscriber implements EventSubscriber
             if (null === $gasPrice) {
                 continue;
             }
-            $entity->setPreviousGasPrices($gasPrice->getGasType(), $gasPrice);
+            $entity->setPreviousGasPricesDecode($gasPrice->getGasType(), $gasPrice);
         }
     }
 }

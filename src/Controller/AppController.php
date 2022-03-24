@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\GasPrice;
 use App\Entity\GasStation;
+use App\Entity\GasType;
+use App\Lists\GasTypeReference;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,8 +19,12 @@ class AppController extends AbstractController
     #[Route('/app2', name: 'app_app2')]
     public function index(EntityManagerInterface $entity): Response
     {
-        $gasStation = $entity->getRepository(GasStation::class)->findOneBy(['id' => 94100005]);
-        dd($gasStation);
+        $gasType = $entity->getRepository(GasType::class)->findOneBy(['reference' => GasTypeReference::GAZOLE]);
+        $gasStation = $entity->getRepository(GasStation::class)->findOneBy(['id' => 94000012]);
+        $gasPrices = $entity->getRepository(GasPrice::class)->findBy(['gasStation' => $gasStation, 'gasType' => $gasType], ['id' => 'DESC']);
+        dump($gasStation);
+        dump($gasPrices);
+        die;
     }
 
     #[Route('/app1', name: 'app_app1')]
