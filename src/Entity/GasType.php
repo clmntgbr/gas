@@ -9,11 +9,13 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: GasTypeRepository::class)]
 #[ApiResource(
     collectionOperations: ['get'],
-    itemOperations: ['get']
+    itemOperations: ['get'],
+    normalizationContext: ['groups' => ['read']]
 )]
 class GasType
 {
@@ -22,12 +24,15 @@ class GasType
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'NONE')]
     #[ORM\Column(type: Types::INTEGER)]
+    #[Groups(["read"])]
     private int $id;
 
     #[ORM\Column(type: Types::STRING, length: 50)]
+    #[Groups(["read"])]
     private string $reference;
 
     #[ORM\Column(type: Types::STRING, length: 50)]
+    #[Groups(["read"])]
     private string $label;
 
     /** @var Collection<int, GasPrice> */

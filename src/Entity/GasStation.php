@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: GasStationRepository::class)]
 #[ApiResource(
@@ -22,7 +23,8 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
             'pagination_enabled' => false
         ],
     ],
-    itemOperations: ['get']
+    itemOperations: ['get'],
+    normalizationContext: ['groups' => ['read']]
 )]
 class GasStation
 {
@@ -31,34 +33,43 @@ class GasStation
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'NONE')]
     #[ORM\Column(type: Types::STRING)]
+    #[Groups(["read"])]
     private string $id;
 
     #[ORM\Column(type: Types::STRING, length: 10)]
+    #[Groups(["read"])]
     private string $pop;
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    #[Groups(["read"])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    #[Groups(["read"])]
     private ?string $company = null;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    #[Groups(["read"])]
     private ?\DateTimeImmutable $closedAt = null;
 
     #[ORM\ManyToOne(targetEntity: GasStationStatus::class)]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(["read"])]
     private GasStationStatus $gasStationStatus;
 
     #[ORM\OneToOne(targetEntity: Address::class, cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(["read"])]
     private Address $address;
 
     #[ORM\ManyToOne(targetEntity: Media::class, cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(["read"])]
     private Media $preview;
 
     #[ORM\ManyToOne(targetEntity: GooglePlace::class, cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(["read"])]
     private GooglePlace $googlePlace;
 
     /** @var array<mixed> $element */
@@ -67,6 +78,7 @@ class GasStation
 
     /** @var Collection<int, GasService> */
     #[ORM\ManyToMany(targetEntity: GasService::class, mappedBy: 'gasStations', cascade: ['persist'])]
+    #[Groups(["read"])]
     private $gasServices;
 
     /** @var Collection<int, GasPrice> */

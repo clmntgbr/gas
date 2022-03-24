@@ -13,7 +13,7 @@ use Safe;
 final class GasPriceUpdateService
 {
     const PATH = 'public/gas_price/';
-    const FILENAME = 'gas-price-instant.zip';
+    const FILENAME = 'gas-price.zip';
 
     public function __construct(
         private GasPriceService      $gasPriceService,
