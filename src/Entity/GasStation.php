@@ -84,6 +84,9 @@ class GasStation
     /** @var array<mixed> $lastGasPricesDecode */
     private $lastGasPricesDecode = [];
 
+    /** @var array<mixed> $previousGasPricesDecode */
+    private $previousGasPricesDecode = [];
+
     /** @var Collection<int, GasStationStatusHistory> */
     #[ORM\OneToMany(mappedBy: 'gasStation', targetEntity: GasStationStatusHistory::class)]
     private $gasStationStatusHistories;
@@ -96,6 +99,7 @@ class GasStation
         $this->lastGasPrices = [];
         $this->previousGasPrices = [];
         $this->lastGasPricesDecode = [];
+        $this->previousGasPricesDecode = [];
     }
 
     public function __toString(): string
@@ -379,6 +383,21 @@ class GasStation
     public function setLastGasPricesDecode(GasType $gasType, GasPrice $gasPrice): self
     {
         $this->lastGasPricesDecode[$gasType->getId()] = $gasPrice;
+
+        return $this;
+    }
+
+    /**
+     * @return GasPrice[]
+     */
+    public function getPreviousGasPricesDecode()
+    {
+        return $this->previousGasPricesDecode;
+    }
+
+    public function setPreviousGasPricesDecode(GasType $gasType, GasPrice $gasPrice): self
+    {
+        $this->previousGasPricesDecode[$gasType->getId()] = $gasPrice;
 
         return $this;
     }

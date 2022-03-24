@@ -39,5 +39,14 @@ class GasStationSubscriber implements EventSubscriber
             }
             $entity->setLastGasPricesDecode($gasPrice->getGasType(), $gasPrice);
         }
+
+        $previousGasPrices = $entity->getPreviousGasPrices();
+        foreach ($previousGasPrices as $previousGasPrice) {
+            $gasPrice = $this->gasPriceRepository->findOneBy(['id' => $previousGasPrice['id']]);
+            if (null === $gasPrice) {
+                continue;
+            }
+            $entity->setPreviousGasPrices($gasPrice->getGasType(), $gasPrice);
+        }
     }
 }

@@ -31,6 +31,11 @@ class Currency
     #[ORM\OneToMany(mappedBy: 'currency', targetEntity: GasPrice::class)]
     private $gasPrices;
 
+    public function __toString(): string
+    {
+        return $this->label;
+    }
+
     public function __construct()
     {
         $this->id = rand();

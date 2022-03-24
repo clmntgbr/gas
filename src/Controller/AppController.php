@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\GasStation;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -15,17 +14,10 @@ class AppController extends AbstractController
     public const LOCAL_ENV = __DIR__ . '/../../.env.local';
 
     #[Route('/app2', name: 'app_app2')]
-    public function index(): Response
+    public function index(EntityManagerInterface $entity): Response
     {
-        $env = self::LOCAL_ENV;
-        if (false === file_exists($env)) {
-            $env = self::DEFAULT_ENV;
-        }
-
-        $dotenv = new Dotenv();
-        $dotenv->loadEnv($env);
-
-        dd($_ENV);
+        $gasStation = $entity->getRepository(GasStation::class)->findOneBy(['id' => 94100005]);
+        dd($gasStation);
     }
 
     #[Route('/app1', name: 'app_app1')]

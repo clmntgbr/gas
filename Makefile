@@ -105,6 +105,10 @@ gas-details:
 gas-closed:
 	$(PHP) bin/console app:gas-stations-closed
 
+## Updating gas price by year
+gas-year:
+	$(PHP) bin/console app:gas-price-year
+
 ## Starting consumer
 consume:
 	$(PHP) bin/console messenger:consume async_priority_high async_priority_low -vv

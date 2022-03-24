@@ -15,6 +15,7 @@ final class GasPriceService
 {
     const GAS_PRICE_FILE_TYPE = "xml";
     const GAS_PRICE_INSTANT_URL = 'GAS_PRICE_INSTANT_URL';
+    const GAS_PRICE_YEAR_URL = 'GAS_PRICE_YEAR_URL';
 
     public function __construct(
         private DotEnvService       $dotEnvService,
@@ -32,6 +33,32 @@ final class GasPriceService
         FileSystemService::delete($path, $name);
 
         FileSystemService::download($this->dotEnvService->findByParameter(self::GAS_PRICE_INSTANT_URL), $name, $path);
+
+        if (false === FileSystemService::exist($path, $name)) {
+            throw new \Exception();
+        }
+
+        if (false === FileSystemService::unzip(sprintf("%s%s", $path, $name), $path)) {
+            throw new \Exception();
+        }
+
+        FileSystemService::delete($path, $name);
+
+        if (null === $xmlPath = FileSystemService::find($path, "%\.($type)$%i")) {
+            throw new \Exception();
+        }
+
+        return $xmlPath;
+    }
+
+    /**
+     * @throws \App\Common\Exception\DotEnvException
+     */
+    public function downloadGasPriceYearFile(string $path, string $name, string $type, string $year): string
+    {
+        FileSystemService::delete($path, $name);
+
+        FileSystemService::download(sprintf($this->dotEnvService->findByParameter(self::GAS_PRICE_YEAR_URL), $year), $name, $path);
 
         if (false === FileSystemService::exist($path, $name)) {
             throw new \Exception();
@@ -69,7 +96,7 @@ final class GasPriceService
         $lastGasPrices = $gasStation->getLastGasPricesDecode();
 
         foreach ($lastGasPrices as $lastGasPrice) {
-            $gasPrice = $this->gasPriceRepository->findLastGasPriceByTypeAndGasStationExceptId($gasStation, $lastGasPrice->getGasType(), $lastGasPrice);
+            $gasPrice = $this->gasPriceRepository->findLastGasPriceByTypeAndGasStationExceptId($gasStation, $lastGasPrice->getGasType(), $lastGasPrice->getId());
             if (null === $gasPrice) {
                 continue;
             }

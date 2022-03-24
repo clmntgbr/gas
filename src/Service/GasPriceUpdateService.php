@@ -12,7 +12,7 @@ use Safe;
 
 final class GasPriceUpdateService
 {
-    const PATH = 'public/gas_price_instant/';
+    const PATH = 'public/gas_price/';
     const FILENAME = 'gas-price-instant.zip';
 
     public function __construct(
@@ -26,24 +26,20 @@ final class GasPriceUpdateService
     {
     }
 
-    public function update(): void
+    public function update(?string $year = null): void
     {
         $gasStations = $this->gasStationRepository->findGasStationById();
         $gasServices = $this->gasServiceRepository->findGasServiceByGasStationId();
         $gasTypes = $this->gasTypeRepository->findGasTypeById();
 
-        $xmlPath = $this->gasPriceService->downloadGasPriceFile(
-            self::PATH,
-            self::FILENAME,
-            GasPriceService::GAS_PRICE_FILE_TYPE
-        );
+        $xmlPath = $this->getXmlPath($year);
 
         $elements = Safe\simplexml_load_file($xmlPath);
 
         foreach ($elements as $element) {
             $gasStationId = $this->gasStationService->getGasStationId($element);
 
-            if (!in_array(substr((string)$gasStationId->getId(), 0, 2), ['94', '75', '92',])) {
+            if (!in_array(substr((string)$gasStationId->getId(), 0, 2), ['94'])) {
                 continue;
             }
 
@@ -59,6 +55,24 @@ final class GasPriceUpdateService
         }
 
         FileSystemService::delete($xmlPath);
+    }
+
+    private function getXmlPath(?string $year): string
+    {
+        if (null === $year) {
+            return $this->gasPriceService->downloadGasPriceFile(
+                self::PATH,
+                self::FILENAME,
+                GasPriceService::GAS_PRICE_FILE_TYPE
+            );
+        }
+
+        return $this->gasPriceService->downloadGasPriceYearFile(
+            self::PATH,
+            self::FILENAME,
+            GasPriceService::GAS_PRICE_FILE_TYPE,
+            $year
+        );
     }
 
     /**

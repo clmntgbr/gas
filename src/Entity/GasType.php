@@ -34,6 +34,11 @@ class GasType
     #[ORM\OneToMany(mappedBy: 'gasType', targetEntity: GasPrice::class)]
     private $gasPrices;
 
+    public function __toString(): string
+    {
+        return $this->label;
+    }
+
     public function __construct()
     {
         $this->gasPrices = new ArrayCollection();
