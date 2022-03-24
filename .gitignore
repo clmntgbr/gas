@@ -13,7 +13,7 @@
 /.env
 .env
 symfony.lock
-/public/gas_price_instant/
+/public/gas_price/
 ###< symfony/framework-bundle ###
 
 ###> lexik/jwt-authentication-bundle ###

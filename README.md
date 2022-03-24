@@ -39,10 +39,12 @@ Open `https://cheapest.docker.localhost` in your favorite web browser for symfon
 
 `make gas-details`
 
+`make gas-closed`
+
+`make gas-year`
+
 `make consume`
 
-`make consume-high`
-
-`make consume-low`
+`make consume`
 
 **Enjoy!**
