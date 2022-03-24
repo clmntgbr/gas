@@ -21,7 +21,7 @@ security:
             stateless: true
             provider: app_user_provider
             json_login:
-                check_path: /api/authentication_token
+                check_path: /api/authenticate
                 username_path: email
                 password_path: password
                 success_handler: lexik_jwt_authentication.handler.authentication_success
@@ -43,7 +43,7 @@ security:
                 always_remember_me: true
 
     access_control:
-      - { path: ^/api/authentication_token, roles: PUBLIC_ACCESS }
+      - { path: ^/api/authenticate, roles: PUBLIC_ACCESS }
       - { path: ^/admin, roles: ROLE_ADMIN }
       - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
 
