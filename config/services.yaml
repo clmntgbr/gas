@@ -27,3 +27,7 @@ services:
     App\Subscriber\GasStationSubscriber:
         tags:
             - { name: doctrine.event_subscriber, connection: default }
+
+    App\Subscriber\UserSubscriber:
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }

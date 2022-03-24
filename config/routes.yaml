@@ -10,3 +10,6 @@ admin:
     resource: ../src/Admin/
     type: annotation
 
+authentication_token:
+    path: /api/authentication_token
+    methods: [ 'POST' ]

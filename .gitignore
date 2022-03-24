@@ -15,3 +15,7 @@
 symfony.lock
 /public/gas_price_instant/
 ###< symfony/framework-bundle ###
+
+###> lexik/jwt-authentication-bundle ###
+/config/jwt/*.pem
+###< lexik/jwt-authentication-bundle ###

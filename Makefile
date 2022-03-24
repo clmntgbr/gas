@@ -109,6 +109,9 @@ gas-closed:
 gas-year:
 	$(PHP) bin/console app:gas-price-year
 
+jwt:
+	@$(DOCKER_COMPOSE) exec php sh -c 'set -e && apk add openssl && bin/console lexik:jwt:generate-keypair --overwrite'
+
 ## Starting consumer
 consume:
 	$(PHP) bin/console messenger:consume async_priority_high async_priority_low -vv

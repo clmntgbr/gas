@@ -27,6 +27,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::STRING, length: 200)]
     private string $email;
 
+    #[ORM\Column(type: Types::STRING, length: 200)]
+    private string $username;
+
     /** @var array<mixed> $roles */
     #[ORM\Column(type: Types::JSON)]
     private $roles = [];
@@ -34,11 +37,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::STRING, length: 255)]
     private string $password;
 
+    #[ORM\Column(type: Types::BOOLEAN)]
+    private bool $isEnable;
+
     private ?string $plainPassword;
 
     public function __construct()
     {
         $this->id = rand();
+        $this->isEnable = false;
     }
 
     public function __toString(): string
@@ -122,14 +129,39 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return (string)$this->email;
     }
 
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
+    }
+
+    public function getUsername(): string
+    {
+        return $this->username;
     }
 
     public function setEmail(string $email): self
     {
         $this->email = $email;
+        $this->username = $email;
+
+        return $this;
+    }
+
+    public function getIsEnable(): bool
+    {
+        return $this->isEnable;
+    }
+
+    public function setIsEnable(bool $isEnable): self
+    {
+        $this->isEnable = $isEnable;
+
+        return $this;
+    }
+
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
 
         return $this;
     }

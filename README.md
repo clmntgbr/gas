@@ -10,6 +10,7 @@ backend part for a Gas Price project using PHP8, Nginx, MariaDb, RabbitMQ, MailD
 4. Run `make build` to build fresh images for docker
 4. Run `make start` to start containers
 4. Run `make init` to initialize the project
+4. Run `make jwt` to generate the public and private keys used for signing JWT tokens
 5. You can run `make help` to see all commands available
 
 ## Overview
