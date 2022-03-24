@@ -3,7 +3,6 @@
 namespace App\Admin\Controller;
 
 use App\Entity\Address;
-use App\Entity\Command;
 use App\Entity\Currency;
 use App\Entity\GasPrice;
 use App\Entity\GasService;
@@ -14,9 +13,11 @@ use App\Entity\GooglePlace;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
+use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class DashboardController extends AbstractDashboardController
 {
@@ -30,6 +31,12 @@ class DashboardController extends AbstractDashboardController
     {
         return Dashboard::new()
             ->setTitle('App');
+    }
+
+    public function configureUserMenu(UserInterface $user): UserMenu
+    {
+        return parent::configureUserMenu($user)
+            ->setName($user->getEmail());
     }
 
     public function configureMenuItems(): iterable

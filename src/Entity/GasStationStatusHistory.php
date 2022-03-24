@@ -2,13 +2,18 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Repository\GasStationStatusHistoryRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: GasStationStatusHistoryRepository::class)]
+#[ApiFilter(OrderFilter::class, properties: ['id' => 'DESC'])]
+#[ApiFilter(SearchFilter::class, properties: ['id' => 'exact', 'gasStation' => 'exact'])]
 #[ApiResource(
     collectionOperations: ['get'],
     itemOperations: ['get']

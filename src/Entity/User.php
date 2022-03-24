@@ -40,7 +40,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $isEnable;
 
-    private ?string $plainPassword;
+    private ?string $plainPassword = null;
 
     public function __construct()
     {
