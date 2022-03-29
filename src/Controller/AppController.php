@@ -20,17 +20,10 @@ class AppController extends AbstractController
     public function index(EntityManagerInterface $entity): Response
     {
         $gasType = $entity->getRepository(GasType::class)->findOneBy(['reference' => GasTypeReference::GAZOLE]);
-        $gasStation = $entity->getRepository(GasStation::class)->findOneBy(['id' => 94000012]);
+        $gasStation = $entity->getRepository(GasStation::class)->findOneBy(['id' => 94600005]);
         $gasPrices = $entity->getRepository(GasPrice::class)->findBy(['gasStation' => $gasStation, 'gasType' => $gasType], ['id' => 'DESC']);
         dump($gasStation);
         dump($gasPrices);
         die;
-    }
-
-    #[Route('/app1', name: 'app_app1')]
-    public function index1(EntityManagerInterface $em): Response
-    {
-        $gasStation = $em->getRepository(GasStation::class)->findOneBy(['id' => 94120010]);
-        dd($gasStation);
     }
 }

@@ -2,15 +2,16 @@
 
 namespace App\Dto;
 
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class GasStationMapDto
 {
-    /**
-     * @var GasStationMapDataDto
-     * @Assert\Valid()
-     */
-    public array $gasStationMapData;
+    #[Assert\Valid()]
+    #[Groups(["read"])]
+    /** @var GasStationMapDto[] */
+    public $gasStationMapData;
 
+    #[Groups(["read"])]
     public array $lowGasPrices;
 }

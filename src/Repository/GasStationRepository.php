@@ -117,7 +117,7 @@ class GasStationRepository extends ServiceEntityRepository
     {
         $query = "  SELECT s.id as gas_station_id, m.path as preview_path, m.name as preview_name, s.address_id, s.company, 
                     s.last_gas_prices as gas_types, 
-                    s.name as gas_station_name, s.last_gas_prices, s.gas_station_status_id, s.google_place_id, a.vicinity,  a.longitude,  a.latitude,
+                    s.name as gas_station_name, s.last_gas_prices, s.previous_gas_prices, s.gas_station_status_id, s.google_place_id, a.vicinity,  a.longitude,  a.latitude,
                     p.url,
                     (SQRT(POW(69.1 * (a.latitude - $latitude), 2) + POW(69.1 * ($longitude - a.longitude) * COS(a.latitude / 57.3), 2))*1000) as distance,
                     (SELECT GROUP_CONCAT(gs.label SEPARATOR ', ')

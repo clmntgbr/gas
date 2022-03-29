@@ -44,7 +44,7 @@ class GasStationMapDtoService
 
         $this->validateDto($gasStationsForMapDto);
 
-        return [$gasStationsForMapDto];
+        return $gasStationsForMapDto;
     }
 
     private function transformer(array $gasStationsForMapDatum)
@@ -58,10 +58,12 @@ class GasStationMapDtoService
         $gasStationsForMapDto->googlePlaceId = $gasStationsForMapDatum['google_place_id'];
         $gasStationsForMapDto->latitude = $gasStationsForMapDatum['latitude'];
         $gasStationsForMapDto->longitude = $gasStationsForMapDatum['longitude'];
+        $gasStationsForMapDto->vicinity = $gasStationsForMapDatum['vicinity'];
         $gasStationsForMapDto->url = $gasStationsForMapDatum['url'];
 
         $gasStationsForMapDto = $this->getLowGasPrices($gasStationsForMapDatum, $gasStationsForMapDto);
         $gasStationsForMapDto = $this->getLastGasPrices($gasStationsForMapDatum, $gasStationsForMapDto);
+        $gasStationsForMapDto = $this->getPreviousGasPrices($gasStationsForMapDatum, $gasStationsForMapDto);
 
         return $gasStationsForMapDto;
     }
@@ -89,17 +91,33 @@ class GasStationMapDtoService
         $lastGasPrices = Safe\json_decode($gasStationsForMapDatum['last_gas_prices'], true);
 
         foreach ($lastGasPrices as $gasPrice) {
-            $gasStationsForMapDto->lastGasPrices[$lastGasPrices['gasTypeId']] = [
-                'gasTypeId' => $lastGasPrices['gasTypeId'],
-                'gasPriceValue' => $lastGasPrices['gasPriceValue'],
-                'gasStationId' => $gasStationsForMapDto->id,
-                'gasPriceId' => $lastGasPrices['id'],
-                'datetimestamp' => $lastGasPrices['datetimestamp'],
-                'gasTypeLabel' => $lastGasPrices['gasTypeLabel'],
-            ];
+            $gasStationsForMapDto->lastGasPrices[$gasPrice['gasTypeId']] = $this->format($gasPrice, $gasStationsForMapDto);
         }
 
         return $gasStationsForMapDto;
+    }
+
+    private function getPreviousGasPrices(array $gasStationsForMapDatum, GasStationMapDataDto $gasStationsForMapDto): GasStationMapDataDto
+    {
+        $previousGasPrices = Safe\json_decode($gasStationsForMapDatum['previous_gas_prices'], true);
+
+        foreach ($previousGasPrices as $gasPrice) {
+            $gasStationsForMapDto->previousGasPrices[$gasPrice['gasTypeId']] = $this->format($gasPrice, $gasStationsForMapDto);
+        }
+
+        return $gasStationsForMapDto;
+    }
+
+    private function format(array $gasPrice, GasStationMapDataDto $gasStationsForMapDto)
+    {
+        return [
+            'gasTypeId' => $gasPrice['gasTypeId'],
+            'gasPriceValue' => $gasPrice['gasPriceValue'],
+            'gasStationId' => $gasStationsForMapDto->id,
+            'gasPriceId' => $gasPrice['id'],
+            'datetimestamp' => $gasPrice['datetimestamp'],
+            'gasTypeLabel' => $gasPrice['gasTypeLabel'],
+        ];
     }
 
     private function updateLowGasPrices(GasStationMapDataDto $gasStationsForMapDto, string $key, array $gasPrice)

@@ -44,8 +44,10 @@ security:
 
     access_control:
       - { path: ^/api/authenticate, roles: PUBLIC_ACCESS }
+      - { path: ^/login, roles: PUBLIC_ACCESS }
       - { path: ^/admin, roles: ROLE_ADMIN }
       - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
+      - { path: ^/, roles: ROLE_ADMIN }
 
 when@test:
   security:

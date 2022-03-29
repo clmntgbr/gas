@@ -2,6 +2,7 @@
 
 namespace App\Api\Controller;
 
+use App\Dto\GasStationMapDto;
 use App\Service\GasStationMapDtoService;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -15,7 +16,7 @@ class GetGasStationsMap
     {
     }
 
-    public function __invoke(Request $request, $data): array
+    public function __invoke(Request $request, $data): GasStationMapDto
     {
         $gasStationMapCoordinateDto = $this->gasStationMapDtoService->getCollectionData($data);
 
