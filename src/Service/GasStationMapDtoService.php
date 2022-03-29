@@ -25,7 +25,8 @@ class GasStationMapDtoService
         $gasStationsForMapData = $this->gasStationRepository->getGasStationsForMap(
             $mapGasStationsDto->longitude,
             $mapGasStationsDto->latitude,
-            $mapGasStationsDto->radius
+            $mapGasStationsDto->radius,
+            $mapGasStationsDto->filters
         );
 
         return $this->hydrate($gasStationsForMapData);
@@ -136,6 +137,7 @@ class GasStationMapDtoService
         $gasStationMapCoordinateDto->longitude = $data['longitude'] ?? null;
         $gasStationMapCoordinateDto->latitude = $data['latitude'] ?? null;
         $gasStationMapCoordinateDto->radius = $data['radius'] ?? null;
+        $gasStationMapCoordinateDto->filters = Safe\json_decode($data['filters'], true) ?? null;
 
         $this->validateDto($gasStationMapCoordinateDto);
 

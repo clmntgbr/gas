@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Api\Controller\GetPostalCode;
 use App\Repository\AddressRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -10,7 +11,14 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: AddressRepository::class)]
 #[ApiResource(
-    collectionOperations: [],
+    collectionOperations: [
+        'get_postal_code' => [
+            'method' => 'GET',
+            'path' => '/addresses/postal_code',
+            'controller' => GetPostalCode::class,
+            'pagination_enabled' => false
+        ],
+    ],
     itemOperations: ['get']
 )]
 class Address

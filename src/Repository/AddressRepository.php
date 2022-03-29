@@ -47,22 +47,19 @@ class AddressRepository extends ServiceEntityRepository
         }
     }
 
-    // /**
-    //  * @return Address[] Returns an array of Address objects
-    //  */
-    /*
-    public function findByExampleField($value)
+     /**
+      * @return Address[] Returns an array
+      */
+    public function findPostalCodes()
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $query = $this->createQueryBuilder('s')
+            ->select('s.postalCode')
+            ->orderBy('s.postalCode', 'ASC')
+            ->groupBy('s.postalCode')
+            ->getQuery();
+
+        return $query->getResult();
     }
-    */
 
     /*
     public function findOneBySomeField($value): ?Address

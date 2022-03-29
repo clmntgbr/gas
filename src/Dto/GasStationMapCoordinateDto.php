@@ -26,4 +26,9 @@ class GasStationMapCoordinateDto
      * @Assert\NotBlank()
      */
     public $radius;
+
+    /**
+     * @var array
+     */
+    public $filters;
 }
