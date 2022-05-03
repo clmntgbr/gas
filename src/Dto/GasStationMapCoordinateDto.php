@@ -6,29 +6,17 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class GasStationMapCoordinateDto
 {
-    /**
-     * @var string
-     * @Assert\NotNull()
-     * @Assert\NotBlank()
-     */
-    public $longitude;
+    #[Assert\NotNull()]
+    #[Assert\NotBlank()]
+    public string $longitude;
 
-    /**
-     * @var string
-     * @Assert\NotNull()
-     * @Assert\NotBlank()
-     */
-    public $latitude;
+    #[Assert\NotNull()]
+    #[Assert\NotBlank()]
+    public string $latitude;
 
-    /**
-     * @var string
-     * @Assert\NotNull()
-     * @Assert\NotBlank()
-     */
-    public $radius;
+    #[Assert\NotNull()]
+    #[Assert\NotBlank()]
+    public string $radius;
 
-    /**
-     * @var array
-     */
-    public $filters;
+    public array $filters;
 }
