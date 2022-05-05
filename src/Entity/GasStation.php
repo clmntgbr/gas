@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Api\Controller\GetGasStationsMap;
+use App\Api\Controller\GetMapGasStations;
 use App\Repository\GasStationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -16,10 +16,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     collectionOperations: [
         'get',
-        'get_gas_stations_map' => [
+        'get_map_gas_stations' => [
             'method' => 'GET',
             'path' => '/map/gas_stations',
-            'controller' => GetGasStationsMap::class,
+            'controller' => GetMapGasStations::class,
             'pagination_enabled' => false
         ],
     ],
@@ -89,7 +89,7 @@ class GasStation
     #[ORM\Column(type: Types::JSON)]
     private $lastGasPrices = [];
 
-    /** @var array<mixed> $lastGasPrices */
+    /** @var array<mixed> $previousGasPrices */
     #[ORM\Column(type: Types::JSON)]
     private $previousGasPrices = [];
 

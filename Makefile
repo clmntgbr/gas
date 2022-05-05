@@ -76,7 +76,7 @@ create:
 
 ## Load fixtures
 fixture:
-	$(PHP) bin/console doctrine:fixtures:load --no-interaction
+	$(PHP) bin/console hautelook:fixtures:load --no-interaction
 
 ## Making migration file
 migration:
@@ -108,6 +108,10 @@ gas-closed:
 ## Updating gas price by year
 gas-year:
 	$(PHP) bin/console app:gas-price-year
+
+## Updating gas price by year
+gas-stations-update-price:
+	$(PHP) bin/console app:gas-stations-update-prices
 
 jwt:
 	@$(DOCKER_COMPOSE) exec php sh -c 'set -e && apk add openssl && bin/console lexik:jwt:generate-keypair --overwrite'

@@ -47,10 +47,10 @@ class AddressRepository extends ServiceEntityRepository
         }
     }
 
-     /**
-      * @return Address[] Returns an array
-      */
-    public function findPostalCodes()
+    /**
+     * @return float|int|mixed|string [] Returns an array
+     */
+    public function getPostalCodes()
     {
         $query = $this->createQueryBuilder('s')
             ->select('s.postalCode')
@@ -58,7 +58,7 @@ class AddressRepository extends ServiceEntityRepository
             ->groupBy('s.postalCode')
             ->getQuery();
 
-        return $query->getResult();
+        return $query->getSingleColumnResult();
     }
 
     /*

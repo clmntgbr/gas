@@ -1,0 +1,9 @@
+App\Entity\Gasprice:
+  gas_price_{1..10000}:
+    id: '<current()>'
+    value: '<randomNumber()>'
+    date: '<dateTime()>'
+    date_timestamp: '<unixTime()>'
+    gas_station: '@gas_station_gas_*'
+    gas_type: '@gas_type_*'
+    currency: '@currency_*'

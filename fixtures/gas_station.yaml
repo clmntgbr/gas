@@ -1,0 +1,11 @@
+App\Entity\GasStation:
+  gas_station_gas_{1..100}:
+    id: '<current()>'
+    pop: '<randomElement([R,A])>'
+    name: '<word()>'
+    company: '<word()>'
+    gas_station_status: '@gas_station_status_*'
+    address: '@address_<current()>'
+    preview: '@preview_<current()>'
+    google_place: '@google_place_<current()>'
+    gas_services: ['@gas_service_*', '@gas_service_*', '@gas_service_*', '@gas_service_*', '@gas_service_*']
