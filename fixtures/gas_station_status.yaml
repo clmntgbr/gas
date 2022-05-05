@@ -1,0 +1,45 @@
+App\Entity\GasStationStatus:
+  gas_station_status_in_creation:
+    id: 1
+    reference: '<(App\Lists\GasStationStatusReference::IN_CREATION)>'
+    label: 'In Creation'
+
+  gas_station_status_not_found_in_text_search:
+    id: 2
+    reference: '<(App\Lists\GasStationStatusReference::NOT_FOUND_IN_TEXTSEARCH)>'
+    label: 'Not Found In TextSearch Google API'
+
+  gas_station_status_not_found_in_details:
+    id: 3
+    reference: '<(App\Lists\GasStationStatusReference::NOT_FOUND_IN_DETAILS)>'
+    label: 'Not Found In Details Google API'
+
+  gas_station_status_found_on_gov_map:
+    id: 4
+    reference: '<(App\Lists\GasStationStatusReference::FOUND_ON_GOV_MAP)>'
+    label: 'Found On Government Map'
+
+  gas_station_status_found_in_textsearch:
+    id: 5
+    reference: '<(App\Lists\GasStationStatusReference::FOUND_IN_TEXTSEARCH)>'
+    label: 'Found In TextSearch Google API'
+
+  gas_station_status_place_id_anomaly:
+    id: 6
+    reference: '<(App\Lists\GasStationStatusReference::PLACE_ID_ANOMALY)>'
+    label: 'Place ID Anomaly'
+
+  gas_station_status_waiting_validation:
+    id: 7
+    reference: '<(App\Lists\GasStationStatusReference::WAITING_VALIDATION)>'
+    label: 'Waiting Validation'
+
+  gas_station_status_open:
+    id: 8
+    reference: '<(App\Lists\GasStationStatusReference::OPEN)>'
+    label: 'Open'
+
+  gas_station_status_closed:
+    id: 9
+    reference: '<(App\Lists\GasStationStatusReference::CLOSED)>'
+    label: 'Closed'

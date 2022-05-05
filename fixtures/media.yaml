@@ -1,0 +1,6 @@
+App\Entity\Media:
+  preview_{1..100}:
+    name: '<imageUrl()>'
+    mime_type: 'application/png'
+    type: 'png'
+    size: '<randomNumber()>'

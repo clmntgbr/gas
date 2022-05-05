@@ -132,7 +132,7 @@ class GasStationRepository extends ServiceEntityRepository
     private function createGasServicesFilter($filters)
     {
         $query = "";
-        if (array_key_exists('gas_services', $filters ?? []) && $filters['gas_services'] !== "") {
+        if (array_key_exists('gas_services', $filters ?? []) && $filters['gas_services'] !== "" && count($filters['gas_services']) > 0) {
             $query = " AND (";
             foreach ($filters['gas_services'] as $gas_service) {
                 $query .= "`gas_services` LIKE '%" . $gas_service . "%' OR ";
@@ -179,9 +179,8 @@ class GasStationRepository extends ServiceEntityRepository
             $radius = 100000000000000000;
         }
 
-        $query = "  SELECT s.id as gas_station_id, m.path as preview_path, m.name as preview_name, s.address_id, s.company, JSON_KEYS(s.last_gas_prices) as gas_types, 
-                    s.last_gas_prices as gas_types, 
-                    s.name as gas_station_name, s.last_gas_prices, s.previous_gas_prices, s.gas_station_status_id, s.google_place_id, a.vicinity,  a.longitude,  a.latitude,
+        $query = "  SELECT s.id as gas_station_id, m.path as preview_path, m.name as preview_name, s.company, JSON_KEYS(s.last_gas_prices) as gas_types, 
+                    s.name as gas_station_name, s.last_gas_prices, s.previous_gas_prices, gs.label gas_station_status, a.vicinity,  a.longitude,  a.latitude,
                     p.url,
                     (SQRT(POW(69.1 * (a.latitude - $latitude), 2) + POW(69.1 * ($longitude - a.longitude) * COS(a.latitude / 57.3), 2))*1000) as distance,
                     (SELECT GROUP_CONCAT(gs.label SEPARATOR ', ')

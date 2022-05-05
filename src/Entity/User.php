@@ -3,17 +3,26 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Api\Controller\GetUser;
 use App\Repository\UserRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ApiResource(
-    collectionOperations: [],
-    itemOperations: ['get']
+    collectionOperations: [
+        'get_user' => [
+            'method' => 'GET',
+            'path' => '/user',
+            'controller' => GetUser::class,
+            'pagination_enabled' => false
+        ],],
+    itemOperations: ['get'],
+    normalizationContext: ['groups' => ['user.read']]
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -21,23 +30,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: Types::INTEGER)]
+    #[ORM\Column(type: Types::INTEGER), Groups(['user.read'])]
     private int $id;
 
-    #[ORM\Column(type: Types::STRING, length: 200)]
+    #[ORM\Column(type: Types::STRING, length: 200), Groups(['user.read'])]
     private string $email;
 
-    #[ORM\Column(type: Types::STRING, length: 200)]
+    #[ORM\Column(type: Types::STRING, length: 200), Groups(['user.read'])]
     private string $username;
 
     /** @var array<mixed> $roles */
-    #[ORM\Column(type: Types::JSON)]
+    #[ORM\Column(type: Types::JSON), Groups(['user.read'])]
     private $roles = [];
 
     #[ORM\Column(type: Types::STRING, length: 255)]
     private string $password;
 
-    #[ORM\Column(type: Types::BOOLEAN)]
+    #[ORM\Column(type: Types::BOOLEAN), Groups(['user.read'])]
     private bool $isEnable;
 
     private ?string $plainPassword = null;
@@ -56,6 +65,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     /**

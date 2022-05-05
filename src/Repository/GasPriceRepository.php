@@ -70,6 +70,25 @@ class GasPriceRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
+    /**
+     * @throws \Doctrine\ORM\Query\QueryException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findLastGasPriceByTypeAndGasStation(GasStation $gasStation, GasType $gasType): ?GasPrice
+    {
+        return $this->createQueryBuilder('g')
+            ->where('g.gasStation = :gs')
+            ->andWhere('g.gasType = :gt')
+            ->setParameters([
+                'gs' => $gasStation,
+                'gt' => $gasType,
+            ])
+            ->orderBy('g.id', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
 
     /**
      * @return array<mixed>

@@ -48,6 +48,13 @@ class GasPrice
         $this->id = rand();
     }
 
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
     public function __toString(): string
     {
         return (string)$this->id;
@@ -75,10 +82,14 @@ class GasPrice
         return $this->date;
     }
 
-    public function setDate(\DateTimeImmutable $date): self
+    public function setDate($date): self
     {
-        $this->date = $date;
+        if ($date instanceof \DateTime) {
+            $this->date = \DateTimeImmutable::createFromMutable($date);
+            return $this;
+        }
 
+        $this->date = $date;
         return $this;
     }
 

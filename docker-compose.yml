@@ -130,6 +130,5 @@ volumes:
 networks:
   service:
     name: ${PROJECT_NAME}
-    external: true
   traefik:
     name: traefik
