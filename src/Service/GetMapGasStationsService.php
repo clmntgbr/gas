@@ -27,7 +27,7 @@ class GetMapGasStationsService
         $this->getMapGasStationsDto->radius = $data['radius'] ?? null;
         $this->getMapGasStationsDto->filters = Safe\json_decode($data['filters'], true) ?? null;
 
-        $this->validate();
+        $this->validate($this->getMapGasStationsDto);
 
         $getMapGasStationsData = $this->gasStationRepository->getGasStationsForMap(
             $this->getMapGasStationsDto->longitude,
@@ -39,12 +39,12 @@ class GetMapGasStationsService
         return $this->hydrate($getMapGasStationsData);
     }
 
-    private function validate()
+    private function validate($entity)
     {
-        $errors = $this->validator->validate($this->getMapGasStationsDto);
+        $errors = $this->validator->validate($entity);
 
         if (count($errors) > 0) {
-            throw new \Exception(sprintf('GetMapGasStationsDto errors : %s', $errors));
+            throw new \Exception(sprintf('%s errors : %s', get_class($entity), $errors));
         }
     }
 
@@ -74,6 +74,8 @@ class GetMapGasStationsService
         $mapGasStationsDataDto->gasServices = $datum['gas_services'];
         $mapGasStationsDataDto->latitude = $datum['latitude'];
         $mapGasStationsDataDto->longitude = $datum['longitude'];
+        $mapGasStationsDataDto->previewName = $datum['preview_name'];
+        $mapGasStationsDataDto->previewPath = $datum['preview_path'];
         $mapGasStationsDataDto->vicinity = $datum['vicinity'];
         $mapGasStationsDataDto->url = $datum['url'];
 

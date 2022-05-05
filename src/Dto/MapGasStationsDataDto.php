@@ -27,7 +27,10 @@ class MapGasStationsDataDto
     public string $latitude;
 
     #[NotNull(), NotBlank, Groups(["read"])]
-    public string $distance;
+    public string $previewName;
+
+    #[Groups(["read"])]
+    public ?string $previewPath;
 
     #[NotNull(), NotBlank, Groups(["read"])]
     public string $gasStationStatus;
