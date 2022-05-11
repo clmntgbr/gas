@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-DOCKER_COMPOSE = docker-compose -p cheapest
+DOCKER_COMPOSE = docker-compose -p gas
 
-CONTAINER_NGINX = $$(docker container ls -f "name=cheapest_nginx" -q)
-CONTAINER_PHP = $$(docker container ls -f "name=cheapest_php" -q)
-CONTAINER_DB = $$(docker container ls -f "name=cheapest_database" -q)
+CONTAINER_NGINX = $$(docker container ls -f "name=gas_nginx" -q)
+CONTAINER_PHP = $$(docker container ls -f "name=gas_php" -q)
+CONTAINER_DB = $$(docker container ls -f "name=gas_database" -q)
 
 NGINX = docker exec -ti $(CONTAINER_NGINX)
 PHP = docker exec -ti $(CONTAINER_PHP)
