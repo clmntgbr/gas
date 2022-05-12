@@ -43,6 +43,10 @@ final class CreateGasStationMessageHandler implements MessageHandlerInterface
             throw new UnrecoverableMessageHandlingException(sprintf('Gas Station already exist (id : %s)', $message->getGasStationId()->getId()));
         }
 
+        if ("" === $message->getLatitude() || "" === $message->getLongitude()) {
+            throw new UnrecoverableMessageHandlingException(sprintf('Gas Station longitude/latitude is empty (id : %s)', $message->getGasStationId()->getId()));
+        }
+
         $address = new Address();
         $address
             ->setCity($message->getCity())
