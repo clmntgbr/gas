@@ -1,5 +1,5 @@
-App\Entity\GasService:
-  gas_service_{1..20}:
-    id: '<current()>'
-    reference: '<word()>'
-    label: '<word()>'
+#App\Entity\GasService:
+#  gas_service_{1..20}:
+#    id: '<current()>'
+#    reference: '<word()>'
+#    label: '<word()>'

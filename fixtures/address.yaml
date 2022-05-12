@@ -1,10 +1,10 @@
-App\Entity\Address:
-  address_{1..100}:
-    vicinity: "<address()>"
-    street: "<streetName()>"
-    city: "<city()>"
-    number: '<buildingNumber()>'
-    postal_code: "<postcode()>"
-    country: "France"
-    longitude: "<longitude()>"
-    latitude: "<latitude()>"
+#App\Entity\Address:
+#  address_{1..100}:
+#    vicinity: "<address()>"
+#    street: "<streetName()>"
+#    city: "<city()>"
+#    number: '<buildingNumber()>'
+#    postal_code: "<postcode()>"
+#    country: "France"
+#    longitude: "<longitude()>"
+#    latitude: "<latitude()>"

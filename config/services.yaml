@@ -34,3 +34,7 @@ services:
 
     App\Decorator\JwtDecorator:
         decorates: 'api_platform.openapi.factory'
+
+    App\Service\GooglePlaceApiService:
+        arguments:
+            $key: '%env(resolve:GOOGLE_CLOUD_PLATFORM)%'
