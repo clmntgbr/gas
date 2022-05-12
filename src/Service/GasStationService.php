@@ -3,7 +3,7 @@
 namespace App\Service;
 
 use App\Common\EntityId\GasStationId;
-use App\Common\Exception\GasStationServiceException;
+use App\Common\Exception\GasStationException;
 use App\Entity\GasStation;
 use App\Helper\GasStationStatusHelper;
 use App\Lists\GasStationStatusReference;
@@ -12,6 +12,7 @@ use App\Message\UpdateGasStationIsClosedMessage;
 use App\Repository\GasPriceRepository;
 use App\Repository\GasStationRepository;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use Safe;
 use Safe\DateTimeImmutable;
 use Symfony\Component\Messenger\Bridge\Amqp\Transport\AmqpStamp;
@@ -36,7 +37,7 @@ final class GasStationService
         $gasStationId = (string)$element->attributes()->id;
 
         if (empty($gasStationId)) {
-            throw new GasStationServiceException(GasStationServiceException::GAS_STATION_ID_EMPTY);
+            throw new GasStationException(GasStationException::GAS_STATION_ID_EMPTY);
         }
 
         return new GasStationId($gasStationId);
@@ -91,10 +92,14 @@ final class GasStationService
             ]
         ];
 
-        $response = $client->request("GET",
-            sprintf("https://www.prix-carburants.gouv.fr/map/recuperer_infos_pdv/%s", $gasStation->getId()),
-            $options
-        );
+        try {
+            $response = $client->request("GET",
+                sprintf("https://www.prix-carburants.gouv.fr/map/recuperer_infos_pdv/%s", $gasStation->getId()),
+                $options
+            );
+        } catch (GuzzleException $e) {
+            throw new GasStationException(GasStationException::GAS_STATION_INFORMATION_NOT_FOUND);
+        }
 
         $content = $response->getBody()->getContents();
 

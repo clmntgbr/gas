@@ -35,8 +35,8 @@ class MapGasStationsDataDto
     #[NotNull(), NotBlank, Groups(["read"])]
     public string $gasStationStatus;
 
-    #[NotNull(), NotBlank, Groups(["read"])]
-    public string $gasServices;
+    #[Groups(["read"])]
+    public ?string $gasServices;
 
     #[Groups(["read"])]
     public ?string $url;

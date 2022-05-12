@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Api\Controller\GetMapGasStations;
+use App\Api\Controller\GetMapGasStationsFilters;
 use App\Repository\GasStationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -20,6 +21,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
             'method' => 'GET',
             'path' => '/map/gas_stations',
             'controller' => GetMapGasStations::class,
+            'pagination_enabled' => false
+        ],
+        'get_map_gas_stations_filters' => [
+            'method' => 'GET',
+            'path' => '/map/gas_stations/filters',
+            'controller' => GetMapGasStationsFilters::class,
             'pagination_enabled' => false
         ],
     ],

@@ -68,4 +68,15 @@ class GasServiceRepository extends ServiceEntityRepository
 
         return $data;
     }
+
+    public function findGasServiceById()
+    {
+        $query = $this->createQueryBuilder('t')
+            ->select('t.id, t.reference, t.label')
+            ->orderBy('t.reference', 'ASC')
+            ->indexBy('t', 't.id')
+            ->getQuery();
+
+        return $query->getResult();
+    }
 }

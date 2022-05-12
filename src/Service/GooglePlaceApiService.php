@@ -28,11 +28,20 @@ class GooglePlaceApiService
         $response = $this->client->request("GET", sprintf(self::TEXT_SEARCH_URL, $gasStation->getAddress()->getStreet(), $this->key));
         $response = Safe\json_decode($response->getBody()->getContents(), true);
 
-        if (array_key_exists('status', $response) && array_key_exists('results', $response) && $response['status'] === 'OK' && count($response['results']) > 0 && array_key_exists('place_id', $response['results'][0])) {
+        if ($this->checkStatus($response, self::TEXT_SEARCH_URL) && array_key_exists('results', $response) && count($response['results']) > 0 && array_key_exists('place_id', $response['results'][0])) {
             return $response['results'][0];
         }
 
         return null;
+    }
+
+    private function checkStatus(array $response, string $method): bool
+    {
+        if (!array_key_exists('status', $response) || (array_key_exists('status', $response) && in_array($response['status'], ['INVALID_REQUEST', 'OVER_QUERY_LIMIT', 'REQUEST_DENIED', 'UNKNOWN_ERROR']))) {
+            throw new \Exception(sprintf('Invalid response status for %s : %s', $method, $response['status'] ?? 'unknown'));
+        }
+
+        return true;
     }
 
     /**
@@ -43,7 +52,7 @@ class GooglePlaceApiService
         $response = $this->client->request("GET", sprintf(self::PLACE_DETAILS_URL, $gasStation->getGooglePlace()->getPlaceId(), $this->key));
         $response = Safe\json_decode($response->getBody()->getContents(), true);
 
-        if (array_key_exists('status', $response) && array_key_exists('result', $response) && $response['status'] === 'OK' && count($response['result']) > 0) {
+        if ($this->checkStatus($response, self::PLACE_DETAILS_URL) && array_key_exists('result', $response) && $response['status'] === 'OK' && count($response['result']) > 0) {
             return $response['result'];
         }
 

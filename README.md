@@ -45,6 +45,4 @@ Open `https://gas.docker.localhost` in your favorite web browser for symfony app
 
 `make consume`
 
-`make consume`
-
 **Enjoy!**

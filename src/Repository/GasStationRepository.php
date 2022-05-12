@@ -200,4 +200,40 @@ class GasStationRepository extends ServiceEntityRepository
         $statement = $this->getEntityManager()->getConnection()->prepare($query);
         return $statement->executeQuery()->fetchAllAssociative();
     }
+
+    /**
+     * @return float|int|mixed|string [] Returns an array
+     */
+    public function getPostalCodes()
+    {
+        $query = $this->createQueryBuilder('s')
+            ->select('a.postalCode')
+            ->innerJoin('s.address', 'a')
+            ->innerJoin('s.gasStationStatus', 't')
+//            ->where('t.reference = :status')
+//            ->setParameter('status', GasStationStatusReference::OPEN)
+//            ->orderBy('a.postalCode', 'ASC')
+            ->groupBy('a.postalCode')
+            ->getQuery();
+
+        return $query->getSingleColumnResult();
+    }
+
+    /**
+     * @return float|int|mixed|string [] Returns an array
+     */
+    public function getCities()
+    {
+        $query = $this->createQueryBuilder('s')
+            ->select('LOWER(MAX(a.city)) as name, a.postalCode')
+            ->innerJoin('s.address', 'a')
+            ->innerJoin('s.gasStationStatus', 't')
+//            ->where('t.reference = :status')
+//            ->setParameter('status', GasStationStatusReference::OPEN)
+            ->orderBy('LOWER(MAX(a.city))', 'ASC')
+            ->groupBy('a.postalCode')
+            ->getQuery();
+
+        return $query->getSingleColumnResult();
+    }
 }

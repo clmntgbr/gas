@@ -47,20 +47,6 @@ class AddressRepository extends ServiceEntityRepository
         }
     }
 
-    /**
-     * @return float|int|mixed|string [] Returns an array
-     */
-    public function getPostalCodes()
-    {
-        $query = $this->createQueryBuilder('s')
-            ->select('s.postalCode')
-            ->orderBy('s.postalCode', 'ASC')
-            ->groupBy('s.postalCode')
-            ->getQuery();
-
-        return $query->getSingleColumnResult();
-    }
-
     /*
     public function findOneBySomeField($value): ?Address
     {
