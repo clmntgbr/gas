@@ -11,14 +11,12 @@ class GooglePlaceApiService
     const TEXT_SEARCH_URL = 'https://maps.googleapis.com/maps/api/place/textsearch/json?query=%s&key=%s&type=gas_station';
     const PLACE_DETAILS_URL = 'https://maps.googleapis.com/maps/api/place/details/json?place_id=%s&key=%s';
 
-    private string $key;
     private Client $client;
 
     public function __construct(
-        private DotEnvService $dotEnvService
+        private string $key
     )
     {
-        $this->key = $this->dotEnvService->findByParameter('GOOGLE_CLOUD_PLATFORM');
         $this->client = new Client();
     }
 

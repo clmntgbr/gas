@@ -2,28 +2,18 @@
 
 namespace App\Controller;
 
-use App\Entity\GasPrice;
-use App\Entity\GasStation;
-use App\Entity\GasType;
-use App\Lists\GasTypeReference;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Service\RabbitMQService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AppController extends AbstractController
 {
-    public const DEFAULT_ENV = __DIR__ . '/../../.env';
-    public const LOCAL_ENV = __DIR__ . '/../../.env.local';
-
-    #[Route('/app2', name: 'app_app2')]
-    public function index(EntityManagerInterface $entity): Response
+    #[Route('/test', name: 'test')]
+    public function test(RabbitMQService $rabbitMQService, Request $request): JsonResponse
     {
-        $gasType = $entity->getRepository(GasType::class)->findOneBy(['reference' => GasTypeReference::GAZOLE]);
-        $gasStation = $entity->getRepository(GasStation::class)->findOneBy(['id' => 94600005]);
-        $gasPrices = $entity->getRepository(GasPrice::class)->findBy(['gasStation' => $gasStation, 'gasType' => $gasType], ['id' => 'DESC']);
-        dump($gasStation);
-        dump($gasPrices);
-        die;
+        $rabbitMQService->getQueues();
+        return JsonResponse::fromJsonString('{"test": "test"}');
     }
 }
