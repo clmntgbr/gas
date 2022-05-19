@@ -7,6 +7,7 @@ use App\Lists\GasStationStatusReference;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Doctrine\ORM\Query\QueryException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -15,7 +16,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method GasStation[]    findAll()
  * @method GasStation[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  *
- * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<GasStation>
+ * @extends ServiceEntityRepository
  */
 class GasStationRepository extends ServiceEntityRepository
 {
@@ -67,7 +68,7 @@ class GasStationRepository extends ServiceEntityRepository
 
     /**
      * @return mixed[]
-     * @throws \Doctrine\ORM\Query\QueryException
+     * @throws QueryException
      */
     public function findGasStationById()
     {
@@ -83,7 +84,7 @@ class GasStationRepository extends ServiceEntityRepository
 
     /**
      * @return mixed[]
-     * @throws \Doctrine\ORM\Query\QueryException
+     * @throws QueryException
      */
     public function getGasStationsUpForDetails()
     {
@@ -101,7 +102,7 @@ class GasStationRepository extends ServiceEntityRepository
 
     /**
      * @return GasStation[]
-     * @throws \Doctrine\ORM\Query\QueryException
+     * @throws QueryException
      */
     public function getGasStationGooglePlaceByPlaceId(string $placeId)
     {
@@ -113,6 +114,40 @@ class GasStationRepository extends ServiceEntityRepository
             ->getQuery();
 
         return $query->getResult();
+    }
+
+    public function getGasStationsForMap(string $longitude, string $latitude, string $radius, $filters = [])
+    {
+        $this->isRadiusNotUsed = false;
+        $gasTypesFilter = $this->createGasTypesFilter($filters);
+        $gasServicesFilter = $this->createGasServicesFilter($filters);
+        $gasStationsCitiesFilter = $this->createGasStationsCitiesFilter($filters);
+        $gasStationsDepartmentsFilter = $this->createGasStationsDepartmentsFilter($filters);
+
+        if ($this->isRadiusNotUsed) {
+            $radius = 100000000000000000;
+        }
+
+        $query = "  SELECT s.id as gas_station_id, m.path as preview_path, m.name as preview_name, s.company, JSON_KEYS(s.last_gas_prices) as gas_types, 
+                    s.name as gas_station_name, s.last_gas_prices, s.previous_gas_prices, gs.label gas_station_status, a.vicinity,  a.longitude,  a.latitude,
+                    p.url,
+                    (SQRT(POW(69.1 * (a.latitude - $latitude), 2) + POW(69.1 * ($longitude - a.longitude) * COS(a.latitude / 57.3), 2))*1000) as distance,
+                    (SELECT GROUP_CONCAT(gs.label SEPARATOR ', ')
+                    FROM gas_stations_services gss
+                    INNER JOIN gas_service gs ON gss.gas_service_id = gs.id
+                    AND gss.gas_station_id = s.id) as gas_services
+                    FROM gas_station s
+                    INNER JOIN address a ON s.address_id = a.id
+                    INNER JOIN media m ON s.preview_id = m.id
+                    INNER JOIN gas_station_status gs ON s.gas_station_status_id = gs.id
+                    LEFT JOIN google_place p ON p.id = s.google_place_id
+                    WHERE a.longitude IS NOT NULL AND a.latitude IS NOT NULL AND gs.reference != 'closed' $gasTypesFilter $gasStationsCitiesFilter $gasStationsDepartmentsFilter
+                    HAVING `distance` < $radius $gasServicesFilter
+                    ORDER BY `distance` ASC LIMIT 300;
+        ";
+
+        $statement = $this->getEntityManager()->getConnection()->prepare($query);
+        return $statement->executeQuery()->fetchAllAssociative();
     }
 
     private function createGasTypesFilter($filters)
@@ -165,40 +200,6 @@ class GasStationRepository extends ServiceEntityRepository
         }
 
         return $query;
-    }
-
-    public function getGasStationsForMap(string $longitude, string $latitude, string $radius, $filters = [])
-    {
-        $this->isRadiusNotUsed = false;
-        $gasTypesFilter = $this->createGasTypesFilter($filters);
-        $gasServicesFilter = $this->createGasServicesFilter($filters);
-        $gasStationsCitiesFilter = $this->createGasStationsCitiesFilter($filters);
-        $gasStationsDepartmentsFilter = $this->createGasStationsDepartmentsFilter($filters);
-
-        if ($this->isRadiusNotUsed) {
-            $radius = 100000000000000000;
-        }
-
-        $query = "  SELECT s.id as gas_station_id, m.path as preview_path, m.name as preview_name, s.company, JSON_KEYS(s.last_gas_prices) as gas_types, 
-                    s.name as gas_station_name, s.last_gas_prices, s.previous_gas_prices, gs.label gas_station_status, a.vicinity,  a.longitude,  a.latitude,
-                    p.url,
-                    (SQRT(POW(69.1 * (a.latitude - $latitude), 2) + POW(69.1 * ($longitude - a.longitude) * COS(a.latitude / 57.3), 2))*1000) as distance,
-                    (SELECT GROUP_CONCAT(gs.label SEPARATOR ', ')
-                    FROM gas_stations_services gss
-                    INNER JOIN gas_service gs ON gss.gas_service_id = gs.id
-                    AND gss.gas_station_id = s.id) as gas_services
-                    FROM gas_station s
-                    INNER JOIN address a ON s.address_id = a.id
-                    INNER JOIN media m ON s.preview_id = m.id
-                    INNER JOIN gas_station_status gs ON s.gas_station_status_id = gs.id
-                    LEFT JOIN google_place p ON p.id = s.google_place_id
-                    WHERE a.longitude IS NOT NULL AND a.latitude IS NOT NULL AND gs.reference != 'closed' $gasTypesFilter $gasStationsCitiesFilter $gasStationsDepartmentsFilter
-                    HAVING `distance` < $radius $gasServicesFilter
-                    ORDER BY `distance` ASC LIMIT 300;
-        ";
-
-        $statement = $this->getEntityManager()->getConnection()->prepare($query);
-        return $statement->executeQuery()->fetchAllAssociative();
     }
 
     /**

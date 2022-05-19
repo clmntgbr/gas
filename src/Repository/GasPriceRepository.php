@@ -6,9 +6,12 @@ use App\Entity\GasPrice;
 use App\Entity\GasStation;
 use App\Entity\GasType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Doctrine\ORM\Query\QueryException;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 
 /**
  * @method GasPrice|null find($id, $lockMode = null, $lockVersion = null)
@@ -16,7 +19,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method GasPrice[]    findAll()
  * @method GasPrice[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  *
- * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<GasPrice>
+ * @extends ServiceEntityRepository
  */
 class GasPriceRepository extends ServiceEntityRepository
 {
@@ -50,8 +53,8 @@ class GasPriceRepository extends ServiceEntityRepository
     }
 
     /**
-     * @throws \Doctrine\ORM\Query\QueryException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws QueryException
+     * @throws NonUniqueResultException
      */
     public function findLastGasPriceByTypeAndGasStationExceptId(GasStation $gasStation, GasType $gasType, int $gasPriceId): ?GasPrice
     {
@@ -71,8 +74,8 @@ class GasPriceRepository extends ServiceEntityRepository
     }
 
     /**
-     * @throws \Doctrine\ORM\Query\QueryException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws QueryException
+     * @throws NonUniqueResultException
      */
     public function findLastGasPriceByTypeAndGasStation(GasStation $gasStation, GasType $gasType): ?GasPrice
     {
@@ -92,7 +95,7 @@ class GasPriceRepository extends ServiceEntityRepository
 
     /**
      * @return array<mixed>
-     * @throws \Doctrine\ORM\Query\QueryException
+     * @throws QueryException
      */
     public function getGasPriceCountByGasStation(GasStation $gasStation)
     {
@@ -105,7 +108,7 @@ class GasPriceRepository extends ServiceEntityRepository
         $statement = $this->getEntityManager()->getConnection()->prepare($query);
         $result = $statement->executeQuery()->fetchAssociative();
         if (false === $result) {
-            throw new \Exception('Sql issue');
+            throw new Exception('Sql issue');
         }
 
         return $result;
@@ -113,7 +116,7 @@ class GasPriceRepository extends ServiceEntityRepository
 
 
     /**
-     * @throws \Doctrine\ORM\Query\QueryException
+     * @throws QueryException
      */
     public function findLastGasPriceByGasStation(GasStation $gasStation): ?GasPrice
     {

@@ -14,7 +14,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Media[]    findAll()
  * @method Media[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  *
- * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<Media>
+ * @extends ServiceEntityRepository
  */
 class MediaRepository extends ServiceEntityRepository
 {

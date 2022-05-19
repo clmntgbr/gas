@@ -32,14 +32,8 @@ class Currency
     #[Groups(["read"])]
     private string $label;
 
-    /** @var Collection<int, GasPrice> */
     #[ORM\OneToMany(mappedBy: 'currency', targetEntity: GasPrice::class, fetch: 'LAZY')]
-    private $gasPrices;
-
-    public function __toString(): string
-    {
-        return $this->label;
-    }
+    private Collection $gasPrices;
 
     public function __construct()
     {
@@ -47,16 +41,21 @@ class Currency
         $this->gasPrices = new ArrayCollection();
     }
 
-    public function setId(int $id): self
+    public function __toString(): string
     {
-        $this->id = $id;
-
-        return $this;
+        return $this->label;
     }
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getReference(): ?string

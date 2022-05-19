@@ -35,10 +35,9 @@ class GasService
     #[Groups(["read"])]
     private string $label;
 
-    /** @var Collection<int, GasStation> */
     #[ORM\ManyToMany(targetEntity: GasStation::class, inversedBy: 'gasServices', fetch: 'EXTRA_LAZY')]
     #[ORM\JoinTable(name: 'gas_stations_services')]
-    private $gasStations;
+    private Collection $gasStations;
 
     public function __construct()
     {
@@ -51,16 +50,16 @@ class GasService
         return $this->label;
     }
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
     public function setId(int $id): self
     {
         $this->id = $id;
 
         return $this;
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getReference(): ?string

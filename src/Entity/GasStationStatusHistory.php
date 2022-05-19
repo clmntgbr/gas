@@ -27,7 +27,7 @@ class GasStationStatusHistory
     #[ORM\Column(type: Types::INTEGER)]
     private int $id;
 
-    #[ORM\ManyToOne(targetEntity: GasStation::class, inversedBy: 'gasStationStatusHistories', cascade: ['persist'])]
+    #[ORM\ManyToOne(targetEntity: GasStation::class, cascade: ['persist'], inversedBy: 'gasStationStatusHistories')]
     #[ORM\JoinColumn(nullable: false)]
     private GasStation $gasStation;
 

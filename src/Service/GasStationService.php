@@ -11,10 +11,12 @@ use App\Message\CreateGasStationMessage;
 use App\Message\UpdateGasStationIsClosedMessage;
 use App\Repository\GasPriceRepository;
 use App\Repository\GasStationRepository;
+use DateInterval;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Safe;
 use Safe\DateTimeImmutable;
+use SimpleXMLElement;
 use Symfony\Component\Messenger\Bridge\Amqp\Transport\AmqpStamp;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -32,7 +34,7 @@ final class GasStationService
     {
     }
 
-    public function getGasStationId(\SimpleXMLElement $element): GasStationId
+    public function getGasStationId(SimpleXMLElement $element): GasStationId
     {
         $gasStationId = (string)$element->attributes()->id;
 
@@ -54,7 +56,7 @@ final class GasStationService
         }
     }
 
-    public function createGasStation(GasStationId $gasStationId, \SimpleXMLElement $element): void
+    public function createGasStation(GasStationId $gasStationId, SimpleXMLElement $element): void
     {
         $this->messageBus->dispatch(new CreateGasStationMessage(
             $gasStationId,
@@ -137,7 +139,7 @@ final class GasStationService
                 continue;
             }
 
-            $date = ((new Safe\DateTime('now'))->sub(new \DateInterval('P6M')));
+            $date = ((new Safe\DateTime('now'))->sub(new DateInterval('P6M')));
             $gasPrice = $this->gasPriceRepository->findLastGasPriceByGasStation($gasStation);
             if ($date > $gasPrice->getDate()) {
                 $this->gasStationIsClosedMessageDispatch($gasStation);

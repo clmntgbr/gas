@@ -6,6 +6,7 @@ use App\Entity\GasType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Doctrine\ORM\Query\QueryException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -14,7 +15,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method GasType[]    findAll()
  * @method GasType[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  *
- * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<GasType>
+ * @extends ServiceEntityRepository
  */
 class GasTypeRepository extends ServiceEntityRepository
 {
@@ -49,7 +50,7 @@ class GasTypeRepository extends ServiceEntityRepository
 
     /**
      * @return mixed[]
-     * @throws \Doctrine\ORM\Query\QueryException
+     * @throws QueryException
      */
     public function findGasTypeById(): array
     {

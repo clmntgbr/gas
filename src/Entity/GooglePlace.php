@@ -61,9 +61,8 @@ class GooglePlace
     #[ORM\Column(type: Types::STRING, length: 50, nullable: true)]
     private ?string $businessStatus = null;
 
-    /** @var array<mixed>|null $openingHours */
     #[ORM\Column(type: Types::ARRAY, nullable: true)]
-    private $openingHours = [];
+    private array $openingHours = [];
 
     public function __construct()
     {
@@ -75,16 +74,16 @@ class GooglePlace
         return $this->placeId ?? '';
     }
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
     public function setId(int $id): self
     {
         $this->id = $id;
 
         return $this;
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getGoogleId(): ?string

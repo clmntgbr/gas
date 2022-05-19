@@ -19,13 +19,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 class GasStationsUpdatePricesCommand extends Command
 {
     public function __construct(
-        private GasStationRepository $gasStationRepository,
-        private GasTypeRepository $gasTypeRepository,
-        private GasPriceRepository $gasPriceRepository,
-        private GasPriceService $gasPriceService,
+        private GasStationRepository   $gasStationRepository,
+        private GasTypeRepository      $gasTypeRepository,
+        private GasPriceRepository     $gasPriceRepository,
+        private GasPriceService        $gasPriceService,
         private EntityManagerInterface $entityManager,
-        string $name = null
-    ){
+        string                         $name = null
+    )
+    {
         parent::__construct($name);
     }
 

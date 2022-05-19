@@ -8,6 +8,8 @@ use App\Message\UpdateGasStationIsClosedMessage;
 use App\Repository\GasStationRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Safe\DateTimeImmutable;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
@@ -23,8 +25,8 @@ final class UpdateGasStationIsClosedMessageHandler implements MessageHandlerInte
     }
 
     /**
-     * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws \Doctrine\ORM\ORMException
+     * @throws OptimisticLockException
+     * @throws ORMException
      */
     public function __invoke(UpdateGasStationIsClosedMessage $message): void
     {

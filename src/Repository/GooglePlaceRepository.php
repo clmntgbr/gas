@@ -14,7 +14,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method GooglePlace[]    findAll()
  * @method GooglePlace[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  *
- * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<GooglePlace>
+ * @extends ServiceEntityRepository
  */
 class GooglePlaceRepository extends ServiceEntityRepository
 {

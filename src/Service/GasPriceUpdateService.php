@@ -9,6 +9,7 @@ use App\Repository\GasServiceRepository;
 use App\Repository\GasStationRepository;
 use App\Repository\GasTypeRepository;
 use Safe;
+use SimpleXMLElement;
 
 final class GasPriceUpdateService
 {
@@ -78,7 +79,7 @@ final class GasPriceUpdateService
     /**
      * @param array<mixed> $gasServices
      */
-    private function getGasService(GasStationId $gasStationId, \SimpleXMLElement $element, array $gasServices): void
+    private function getGasService(GasStationId $gasStationId, SimpleXMLElement $element, array $gasServices): void
     {
         foreach ((array)$element->services->service as $item) {
             if (array_key_exists($gasStationId->getId(), $gasServices)) {
@@ -97,7 +98,7 @@ final class GasPriceUpdateService
     /**
      * @param array<mixed> $gasTypes
      */
-    private function getGasPrices(GasStationId $gasStationId, \SimpleXMLElement $element, array $gasTypes): void
+    private function getGasPrices(GasStationId $gasStationId, SimpleXMLElement $element, array $gasTypes): void
     {
         foreach ($element->prix as $item) {
             $gasTypeId = (string)$item->attributes()->id;

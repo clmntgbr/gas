@@ -14,7 +14,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method GasStationStatusHistory[]    findAll()
  * @method GasStationStatusHistory[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  *
- * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<GasStationStatusHistory>
+ * @extends ServiceEntityRepository
  */
 class GasStationStatusHistoryRepository extends ServiceEntityRepository
 {

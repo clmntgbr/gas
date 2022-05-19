@@ -2,6 +2,8 @@
 
 namespace App\Common\Exception;
 
-class DotEnvException extends \Exception
+use Exception;
+
+class DotEnvException extends Exception
 {
 }

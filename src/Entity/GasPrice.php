@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\GasPriceRepository;
+use DateTime;
+use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
@@ -26,7 +28,7 @@ class GasPrice
     private int $value;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
-    private \DateTimeImmutable $date;
+    private DateTimeImmutable $date;
 
     #[ORM\Column(type: Types::INTEGER)]
     private int $dateTimestamp;
@@ -48,13 +50,6 @@ class GasPrice
         $this->id = rand();
     }
 
-    public function setId(int $id): self
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
     public function __toString(): string
     {
         return (string)$this->id;
@@ -63,6 +58,13 @@ class GasPrice
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getValue(): ?int
@@ -77,15 +79,15 @@ class GasPrice
         return $this;
     }
 
-    public function getDate(): ?\DateTimeImmutable
+    public function getDate(): ?DateTimeImmutable
     {
         return $this->date;
     }
 
     public function setDate($date): self
     {
-        if ($date instanceof \DateTime) {
-            $this->date = \DateTimeImmutable::createFromMutable($date);
+        if ($date instanceof DateTime) {
+            $this->date = DateTimeImmutable::createFromMutable($date);
             return $this;
         }
 

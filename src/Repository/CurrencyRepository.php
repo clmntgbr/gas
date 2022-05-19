@@ -14,7 +14,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Currency[]    findAll()
  * @method Currency[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  *
- * @extends \Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository<Currency>
+ * @extends ServiceEntityRepository
  */
 class CurrencyRepository extends ServiceEntityRepository
 {

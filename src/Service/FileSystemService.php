@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use Safe;
+use ZipArchive;
 
 final class FileSystemService
 {
@@ -71,7 +72,7 @@ final class FileSystemService
      */
     public static function unzip(string $zipfile, string $extractPath)
     {
-        $zip = new \ZipArchive();
+        $zip = new ZipArchive();
 
         if ('true' != $zip->open($zipfile)) {
             return false;

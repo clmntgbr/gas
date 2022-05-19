@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\GasStation;
+use Exception;
 use GuzzleHttp\Client;
 use Safe;
 
@@ -38,7 +39,7 @@ class GooglePlaceApiService
     private function checkStatus(array $response, string $method): bool
     {
         if (!array_key_exists('status', $response) || (array_key_exists('status', $response) && in_array($response['status'], ['INVALID_REQUEST', 'OVER_QUERY_LIMIT', 'REQUEST_DENIED', 'UNKNOWN_ERROR']))) {
-            throw new \Exception(sprintf('Invalid response status for %s : %s', $method, $response['status'] ?? 'unknown'));
+            throw new Exception(sprintf('Invalid response status for %s : %s', $method, $response['status'] ?? 'unknown'));
         }
 
         return true;

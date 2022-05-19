@@ -6,16 +6,17 @@ use App\Dto\GetMapGasStationsDto;
 use App\Dto\MapGasStationsDataDto;
 use App\Dto\MapGasStationsDto;
 use App\Repository\GasStationRepository;
+use Exception;
 use Safe;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class GetMapGasStationsService
 {
     public function __construct(
-        private ValidatorInterface $validator,
+        private ValidatorInterface   $validator,
         private GetMapGasStationsDto $getMapGasStationsDto,
         private GasStationRepository $gasStationRepository,
-        private array $lowGasPrices = []
+        private array                $lowGasPrices = []
     )
     {
     }
@@ -44,7 +45,7 @@ class GetMapGasStationsService
         $errors = $this->validator->validate($entity);
 
         if (count($errors) > 0) {
-            throw new \Exception(sprintf('%s errors : %s', get_class($entity), $errors));
+            throw new Exception(sprintf('%s errors : %s', get_class($entity), $errors));
         }
     }
 

@@ -6,6 +6,7 @@ use ApiPlatform\Core\DataProvider\ContextAwareCollectionDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use App\Api\Controller\GetMapGasStations;
 use App\Entity\GasStation;
+use Exception;
 
 class GetMapGasStationsCollectionDataProvider implements ContextAwareCollectionDataProviderInterface, RestrictedDataProviderInterface
 {
@@ -20,6 +21,6 @@ class GetMapGasStationsCollectionDataProvider implements ContextAwareCollectionD
             return $context['filters'];
         }
 
-        throw new \Exception('Missing filters params.');
+        throw new Exception('Missing filters params.');
     }
 }

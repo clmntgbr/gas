@@ -6,6 +6,7 @@ use App\Entity\GasStation;
 use App\Entity\GasStationStatusHistory;
 use App\Repository\GasStationStatusRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 
 class GasStationStatusHelper
 {
@@ -21,7 +22,7 @@ class GasStationStatusHelper
         $gasStationStatus = $this->gasStationStatusRepository->findOneBy(['reference' => $reference]);
 
         if (null === $gasStationStatus) {
-            throw new \Exception(sprintf('Gas Station Status don\'t exist (reference : %s', $reference));
+            throw new Exception(sprintf('Gas Station Status don\'t exist (reference : %s', $reference));
         }
 
         $gasStation->setGasStationStatus($gasStationStatus);

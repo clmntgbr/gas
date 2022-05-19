@@ -39,9 +39,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::STRING, length: 200), Groups(['user.read'])]
     private string $username;
 
-    /** @var array<mixed> $roles */
     #[ORM\Column(type: Types::JSON), Groups(['user.read'])]
-    private $roles = [];
+    private array $roles = [];
 
     #[ORM\Column(type: Types::STRING, length: 255)]
     private string $password;
@@ -150,15 +149,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->email;
     }
 
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+        $this->username = $email;
+
+        return $this;
+    }
+
     public function getUsername(): string
     {
         return $this->username;
     }
 
-    public function setEmail(string $email): self
+    public function setUsername(string $username): self
     {
-        $this->email = $email;
-        $this->username = $email;
+        $this->username = $username;
 
         return $this;
     }
@@ -171,13 +177,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsEnable(bool $isEnable): self
     {
         $this->isEnable = $isEnable;
-
-        return $this;
-    }
-
-    public function setUsername(string $username): self
-    {
-        $this->username = $username;
 
         return $this;
     }

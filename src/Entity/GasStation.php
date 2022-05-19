@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Api\Controller\GetMapGasStations;
 use App\Api\Controller\GetMapGasStationsFilters;
 use App\Repository\GasStationRepository;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -57,7 +58,7 @@ class GasStation
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     #[Groups(["read"])]
-    private ?\DateTimeImmutable $closedAt = null;
+    private ?DateTimeImmutable $closedAt = null;
 
     #[ORM\ManyToOne(targetEntity: GasStationStatus::class)]
     #[ORM\JoinColumn(nullable: false)]
@@ -79,36 +80,28 @@ class GasStation
     #[Groups(["read"])]
     private GooglePlace $googlePlace;
 
-    /** @var array<mixed> $element */
     #[ORM\Column(type: Types::ARRAY)]
-    private $element = [];
+    private array $element = [];
 
-    /** @var Collection<int, GasService> */
     #[ORM\ManyToMany(targetEntity: GasService::class, mappedBy: 'gasStations', cascade: ['persist'])]
     #[Groups(["read"])]
-    private $gasServices;
+    private Collection $gasServices;
 
-    /** @var Collection<int, GasPrice> */
     #[ORM\OneToMany(mappedBy: 'gasStation', targetEntity: GasPrice::class)]
-    private $gasPrices;
+    private Collection $gasPrices;
 
-    /** @var array<mixed> $lastGasPrices */
     #[ORM\Column(type: Types::JSON)]
-    private $lastGasPrices = [];
+    private array $lastGasPrices = [];
 
-    /** @var array<mixed> $previousGasPrices */
     #[ORM\Column(type: Types::JSON)]
-    private $previousGasPrices = [];
+    private array $previousGasPrices = [];
 
-    /** @var array<mixed> $lastGasPricesDecode */
-    private $lastGasPricesDecode = [];
+    private array $lastGasPricesDecode = [];
 
-    /** @var array<mixed> $previousGasPricesDecode */
-    private $previousGasPricesDecode = [];
+    private array $previousGasPricesDecode = [];
 
-    /** @var Collection<int, GasStationStatusHistory> */
     #[ORM\OneToMany(mappedBy: 'gasStation', targetEntity: GasStationStatusHistory::class)]
-    private $gasStationStatusHistories;
+    private Collection $gasStationStatusHistories;
 
     public function __construct()
     {
@@ -124,18 +117,6 @@ class GasStation
     public function __toString(): string
     {
         return $this->id;
-    }
-
-    public function getId(): string
-    {
-        return $this->id;
-    }
-
-    public function setId(string $id): self
-    {
-        $this->id = $id;
-
-        return $this;
     }
 
     public function getPop(): ?string
@@ -174,12 +155,12 @@ class GasStation
         return $this;
     }
 
-    public function getClosedAt(): ?\DateTimeImmutable
+    public function getClosedAt(): ?DateTimeImmutable
     {
         return $this->closedAt;
     }
 
-    public function setClosedAt(?\DateTimeImmutable $closedAt): self
+    public function setClosedAt(?DateTimeImmutable $closedAt): self
     {
         $this->closedAt = $closedAt;
 
@@ -352,6 +333,18 @@ class GasStation
         return $previousGasStationStatusHistory;
     }
 
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function setId(string $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
     public function getLastGasStationStatusHistory(): ?GasStationStatusHistory
     {
         return $this->gasStationStatusHistories->last() ?? null;
@@ -365,6 +358,12 @@ class GasStation
         return $this->lastGasPrices;
     }
 
+    public function setLastGasPrices(GasType $gasType, GasPrice $gasPrice): self
+    {
+        $this->lastGasPrices[$gasType->getId()] = $this->hydrateGasPrices($gasPrice);
+        return $this;
+    }
+
     /**
      * @return array<mixed>
      */
@@ -376,12 +375,6 @@ class GasStation
     public function setPreviousGasPrices(GasType $gasType, GasPrice $gasPrice): self
     {
         $this->previousGasPrices[$gasType->getId()] = $this->hydrateGasPrices($gasPrice);
-        return $this;
-    }
-
-    public function setLastGasPrices(GasType $gasType, GasPrice $gasPrice): self
-    {
-        $this->lastGasPrices[$gasType->getId()] = $this->hydrateGasPrices($gasPrice);
         return $this;
     }
 

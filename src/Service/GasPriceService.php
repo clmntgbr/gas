@@ -4,10 +4,14 @@ namespace App\Service;
 
 use App\Common\EntityId\GasStationId;
 use App\Common\EntityId\GasTypeId;
+use App\Common\Exception\DotEnvException;
 use App\Entity\GasPrice;
 use App\Entity\GasStation;
 use App\Message\CreateGasPriceMessage;
 use App\Repository\GasPriceRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\Query\QueryException;
+use Exception;
 use Symfony\Component\Messenger\Bridge\Amqp\Transport\AmqpStamp;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -26,7 +30,7 @@ final class GasPriceService
     }
 
     /**
-     * @throws \App\Common\Exception\DotEnvException
+     * @throws DotEnvException
      */
     public function downloadGasPriceFile(string $path, string $name, string $type): string
     {
@@ -35,24 +39,24 @@ final class GasPriceService
         FileSystemService::download($this->dotEnvService->findByParameter(self::GAS_PRICE_INSTANT_URL), $name, $path);
 
         if (false === FileSystemService::exist($path, $name)) {
-            throw new \Exception();
+            throw new Exception();
         }
 
         if (false === FileSystemService::unzip(sprintf("%s%s", $path, $name), $path)) {
-            throw new \Exception();
+            throw new Exception();
         }
 
         FileSystemService::delete($path, $name);
 
         if (null === $xmlPath = FileSystemService::find($path, "%\.($type)$%i")) {
-            throw new \Exception();
+            throw new Exception();
         }
 
         return $xmlPath;
     }
 
     /**
-     * @throws \App\Common\Exception\DotEnvException
+     * @throws DotEnvException
      */
     public function downloadGasPriceYearFile(string $path, string $name, string $type, string $year): string
     {
@@ -61,17 +65,17 @@ final class GasPriceService
         FileSystemService::download(sprintf($this->dotEnvService->findByParameter(self::GAS_PRICE_YEAR_URL), $year), $name, $path);
 
         if (false === FileSystemService::exist($path, $name)) {
-            throw new \Exception();
+            throw new Exception();
         }
 
         if (false === FileSystemService::unzip(sprintf("%s%s", $path, $name), $path)) {
-            throw new \Exception();
+            throw new Exception();
         }
 
         FileSystemService::delete($path, $name);
 
         if (null === $xmlPath = FileSystemService::find($path, "%\.($type)$%i")) {
-            throw new \Exception();
+            throw new Exception();
         }
 
         return $xmlPath;
@@ -88,8 +92,8 @@ final class GasPriceService
     }
 
     /**
-     * @throws \Doctrine\ORM\Query\QueryException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws QueryException
+     * @throws NonUniqueResultException
      */
     public function updatePreviousGasPrices(GasStation $gasStation): void
     {
