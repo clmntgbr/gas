@@ -29,6 +29,9 @@ class MapGasStationsDataDto
     #[NotNull(), NotBlank, Groups(["read"])]
     public string $previewName;
 
+    #[NotNull(), NotBlank, Groups(["read"])]
+    public string $distance;
+
     #[Groups(["read"])]
     public ?string $previewPath;
 

@@ -3,6 +3,7 @@
 namespace App\Subscriber;
 
 use App\Entity\GasStation;
+use App\Helper\GasStationStatusHelper;
 use App\Repository\GasPriceRepository;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
@@ -11,7 +12,8 @@ use Doctrine\ORM\Events;
 class GasStationSubscriber implements EventSubscriber
 {
     public function __construct(
-        private GasPriceRepository $gasPriceRepository
+        private GasPriceRepository     $gasPriceRepository,
+        private GasStationStatusHelper $gasStationStatusHelper
     )
     {
     }
@@ -19,7 +21,8 @@ class GasStationSubscriber implements EventSubscriber
     public function getSubscribedEvents(): array
     {
         return [
-            Events::postLoad
+            Events::postLoad => 'postLoad',
+            Events::postUpdate => 'postUpdate',
         ];
     }
 
@@ -48,5 +51,26 @@ class GasStationSubscriber implements EventSubscriber
             }
             $entity->setPreviousGasPricesDecode($gasPrice->getGasType(), $gasPrice);
         }
+    }
+
+    public function postUpdate(LifecycleEventArgs $event): void
+    {
+        $entity = $event->getObject();
+
+        if (!$entity instanceof GasStation) {
+            return;
+        }
+
+        $changeSet = $event->getObjectManager()->getUnitOfWork()->getEntityChangeSet($entity);
+
+        if (!array_key_exists('gasStationStatus', $changeSet)) {
+            return;
+        }
+
+        if (null !== $entity->getLastGasStationStatusHistory() && $entity->getLastGasStationStatusHistory()->getGasStationStatus()->getReference() === $changeSet['gasStationStatus'][1]->getReference()) {
+            return;
+        }
+
+        $this->gasStationStatusHelper->setStatus($changeSet['gasStationStatus'][1]->getReference(), $entity, true);
     }
 }

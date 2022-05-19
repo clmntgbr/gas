@@ -209,10 +209,7 @@ class GasStationRepository extends ServiceEntityRepository
         $query = $this->createQueryBuilder('s')
             ->select('a.postalCode')
             ->innerJoin('s.address', 'a')
-            ->innerJoin('s.gasStationStatus', 't')
-//            ->where('t.reference = :status')
-//            ->setParameter('status', GasStationStatusReference::OPEN)
-//            ->orderBy('a.postalCode', 'ASC')
+            ->orderBy('a.postalCode', 'ASC')
             ->groupBy('a.postalCode')
             ->getQuery();
 
@@ -227,9 +224,6 @@ class GasStationRepository extends ServiceEntityRepository
         $query = $this->createQueryBuilder('s')
             ->select('LOWER(MAX(a.city)) as name, a.postalCode')
             ->innerJoin('s.address', 'a')
-            ->innerJoin('s.gasStationStatus', 't')
-//            ->where('t.reference = :status')
-//            ->setParameter('status', GasStationStatusReference::OPEN)
             ->orderBy('LOWER(MAX(a.city))', 'ASC')
             ->groupBy('a.postalCode')
             ->getQuery();

@@ -352,6 +352,11 @@ class GasStation
         return $previousGasStationStatusHistory;
     }
 
+    public function getLastGasStationStatusHistory(): ?GasStationStatusHistory
+    {
+        return $this->gasStationStatusHistories->last() ?? null;
+    }
+
     /**
      * @return array<mixed>
      */

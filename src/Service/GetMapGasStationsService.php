@@ -74,6 +74,7 @@ class GetMapGasStationsService
         $mapGasStationsDataDto->gasServices = $datum['gas_services'];
         $mapGasStationsDataDto->latitude = $datum['latitude'];
         $mapGasStationsDataDto->longitude = $datum['longitude'];
+        $mapGasStationsDataDto->distance = $datum['distance'];
         $mapGasStationsDataDto->previewName = $datum['preview_name'];
         $mapGasStationsDataDto->previewPath = $datum['preview_path'];
         $mapGasStationsDataDto->vicinity = $datum['vicinity'];
