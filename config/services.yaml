@@ -36,6 +36,10 @@ services:
         tags: [ { name: 'api_platform.data_persister' } ]
         autoconfigure: false
 
+    App\DataPersister\DeleteUserGasStationItemDataPersister:
+        tags: [ { name: 'api_platform.data_persister' } ]
+        autoconfigure: false
+
     App\Subscriber\GasStationSubscriber:
         tags:
             - { name: doctrine.event_subscriber, connection: default }
