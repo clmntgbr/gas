@@ -24,6 +24,18 @@ services:
         resource: '../src/Api/Controller/'
         tags: [ 'controller.service_arguments' ]
 
+    App\DataProvider\GetMapGasStationsCollectionDataProvider:
+        tags: [ { name: 'api_platform.collection_data_provider' } ]
+        autoconfigure: false
+
+    App\DataProvider\GetUserGasStationCollectionDataProvider:
+        tags: [ { name: 'api_platform.collection_data_provider' } ]
+        autoconfigure: false
+
+    App\DataPersister\PostUserGasStationCollectionDataPersister:
+        tags: [ { name: 'api_platform.data_persister' } ]
+        autoconfigure: false
+
     App\Subscriber\GasStationSubscriber:
         tags:
             - { name: doctrine.event_subscriber, connection: default }
