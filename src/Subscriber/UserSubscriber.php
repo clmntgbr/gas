@@ -34,6 +34,7 @@ class UserSubscriber implements EventSubscriber
 
         $user
             ->setPassword($this->userPasswordHasher->hashPassword($user, $user->getPlainPassword()))
+            ->setIsEnable(true)
             ->eraseCredentials();
     }
 

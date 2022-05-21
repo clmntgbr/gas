@@ -4,24 +4,31 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Api\Controller\GetUser;
+use App\Api\Controller\PostUser;
 use App\Repository\UserRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\NotNull;
 
-#[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\Entity(repositoryClass: UserRepository::class), UniqueEntity('email', 'username')]
 #[ApiResource(
     collectionOperations: [
+        'post',
         'get_user' => [
             'method' => 'GET',
             'path' => '/user',
             'controller' => GetUser::class,
             'pagination_enabled' => false
-        ],],
+        ]],
     itemOperations: ['get'],
+    denormalizationContext: ['groups' => ['user.post']],
     normalizationContext: ['groups' => ['user.read']]
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -33,7 +40,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::INTEGER), Groups(['user.read'])]
     private int $id;
 
-    #[ORM\Column(type: Types::STRING, length: 200), Groups(['user.read'])]
+    #[ORM\Column(type: Types::STRING, length: 200, unique: true), Groups(['user.read', 'user.post']), Email, NotBlank, NotNull]
     private string $email;
 
     #[ORM\Column(type: Types::STRING, length: 200), Groups(['user.read'])]
@@ -48,6 +55,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::BOOLEAN), Groups(['user.read'])]
     private bool $isEnable;
 
+    #[Groups(['user.post']), NotBlank, NotNull]
     private ?string $plainPassword = null;
 
     public function __construct()
