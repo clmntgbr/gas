@@ -15,6 +15,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\NotCompromisedPassword;
 use Symfony\Component\Validator\Constraints\NotNull;
 
 #[ORM\Entity(repositoryClass: UserRepository::class), UniqueEntity('email', 'username')]
@@ -55,7 +56,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::BOOLEAN), Groups(['user.read'])]
     private bool $isEnable;
 
-    #[Groups(['user.post']), NotBlank, NotNull]
+    #[Groups(['user.post']), NotBlank(groups: ['user.post']), NotNull(groups: ['user.post']), NotCompromisedPassword(groups: ['user.post'])]
     private ?string $plainPassword = null;
 
     public function __construct()
