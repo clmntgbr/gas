@@ -4,22 +4,23 @@ backend part for a Gas Price project using PHP8, Nginx, MariaDb, RabbitMQ, MailD
 
 ## Getting Started
 
-1. Clone this repo
-2. Run `cp .env.dist .env`
-3. Edit the .env file to change PROJECT_NAME variable for renaming containers & directory
-4. Run `make build` to build fresh images for docker
-4. Run `make start` to start containers
-4. Run `make init` to initialize the project
-4. Run `make jwt` to generate the public and private keys used for signing JWT tokens
-5. You can run `make help` to see all commands available
+1. Clone https://github.com/clmntgbr/setup and run `make start`
+2. Clone this repo
+3. Run `cp .env.dist .env`
+4. Edit the .env file to change PROJECT_NAME variable for renaming containers & directory
+5. Run `make build` to build fresh images for docker
+6. Run `make start` to start containers
+7. Run `make init` to initialize the project
+8. Run `make jwt` to generate the public and private keys used for signing JWT tokens
+9. You can run `make help` to see all commands available
 
 ## Overview
 
-Open `https://traefik.docker.localhost/dashboard/#/` in your favorite web browser for traefik dashboard
+Open `https://docker.localhost/dashboard/#/` in your favorite web browser for traefik dashboard
 
-Open `https://gas-maildev.docker.localhost` in your favorite web browser for maildev
+Open `https://maildev.docker.localhost` in your favorite web browser for maildev
 
-Open `https://gas-rabbitmq.docker.localhost` in your favorite web browser for rabbitmq
+Open `https://rabbitmq.docker.localhost` in your favorite web browser for rabbitmq
 
 Open `https://gas.docker.localhost` in your favorite web browser for symfony app
 
